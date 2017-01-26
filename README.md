@@ -3,35 +3,38 @@
 This tutorial concenrs 3D lidar data processing with CUDA
 Content of the tutorial:
 
-lesson_0: basic transformations
+## Lessons
 
-lesson_1: down-sampling
+### Lesson 0: basic transformations
 
-lesson_2: noise removal (naive)
+### Lesson 1: down-sampling
 
-lesson_3: nearest neighborhood search
+### Lesson 2: noise removal (naive)
 
-lesson_4: noise removal
+### Lesson 3: nearest neighborhood search
 
-lesson_5: normal vector computation
+### Lesson 4: noise removal
 
-lesson_6: projections
+### Lesson 5: normal vector computation
 
-lesson_7: basic semantics
+### Lesson 6: projections
 
-lesson_8: semantic nearest neighborhood search
+### Lesson 7: basic semantics
 
-lesson_9: data registration Iterative Closest Point
+### Lesson 8: semantic nearest neighborhood search
 
-lesson_10: data registration semantic Iterative Closest Point
+### Lesson 9: data registration Iterative Closest Point
 
-lesson_11: data registration point to projection Iterative Closest Point
+### Lesson 10: data registration semantic Iterative Closest Point
+
+### Lesson 11: data registration point to projection Iterative Closest Point
 
 # requirements
+
 Software was developed and tested on LINUX UBUNTU 14.04 with following libraries
 OpenGL, GLUT, PCL 1.5, CUDA>=7.5
 
-remark: there is a problem with PCL on UBUNTU 16.04 (work in progress)
+remark: there is a problem with NVCC on UBUNTU 16.04, CUDA 8.0 (work in progress)
 
 # build
 Each lesson is an independent software package, thus the following steps should be performed:
