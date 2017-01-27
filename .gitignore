@@ -30,3 +30,7 @@
 
 BUILD
 *~
+
+#eclipse project
+.cproject
+.project
