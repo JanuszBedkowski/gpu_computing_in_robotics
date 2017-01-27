@@ -68,8 +68,12 @@ Here are results achieved using example above.
 
 ![fastSLAM](images/fastSLAM.jpg)
 
+Input semantic data
+![fastSLAM-semanticData](images/fastSLAM-semanticData.png)
+
+All trajectories (particles)
 ![fastSLAM-allTrajectories](images/fastSLAM-allTrajectories.png)
 
+Best trajectory
 ![fastSLAM-bestTrajectory](images/fastSLAM-bestTrajectory.png)
 
-![fastSLAM-semanticData](images/fastSLAM-semanticData.png)
