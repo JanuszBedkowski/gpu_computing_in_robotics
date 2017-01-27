@@ -61,6 +61,7 @@ to run example
 ```
 
 **Results**
+
 Here are results achieved using example above.
 
 ![fastSLAM](images/fastSLAM.jpg)
