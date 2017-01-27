@@ -1,4 +1,4 @@
-# gpu_computing_in_robotics
+# GPU Computing in Robotics
 
 This tutorial concenrs 3D lidar data processing with CUDA
 Content of the tutorial:
@@ -29,14 +29,14 @@ Content of the tutorial:
 
 ### Lesson 11: data registration point to projection Iterative Closest Point
 
-# requirements
+# Requirements
 
 Software was developed and tested on LINUX UBUNTU 14.04 with following libraries
 OpenGL, GLUT, PCL 1.5, CUDA>=7.5
 
 remark: there is a problem with NVCC on UBUNTU 16.04, CUDA 8.0 (work in progress)
 
-# build
+# Build
 Each lesson is an independent software package, thus the following steps should be performed:
 ```
 cd lesson_X
@@ -49,14 +49,24 @@ make
 ## Use Cases
 
 ### fastSLAM
-This DEMO shows the parallel computing for fastSLAM. Each particle containes 3D map built based on registered Velodyne VLP16 3D semantic data. The result is corrected trajectory. 
+This DEMO shows the parallel computing for fastSLAM. Each particle containes 3D map built based on registered Velodyne VLP16 3D semantic data. The result is corrected trajectory.
 
-#### execute
-./fastSLAM
+#### Execute
 
-read instructions in console
+Run `./fastSLAM` and read instructions in console
 
 to run example
+```
 ./fastSLAM ../dataset/model_reduced_pointXYZIRNL.xml
+```
 
+**Results**
+Here are results achieved using example above.
 
+![fastSLAM](images/fastSLAM.jpg)
+
+![fastSLAM-allTrajectories](images/fastSLAM-allTrajectories.png)
+
+![fastSLAM-bestTrajectory](images/fastSLAM-bestTrajectory.png)
+
+![fastSLAM-semanticData](images/fastSLAM-semanticData.png)
