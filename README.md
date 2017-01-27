@@ -46,3 +46,15 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 ./lesson_X
 ```
+## Use Cases
+
+### fastSLAM
+
+#### execute
+./fastSLAM
+
+read instructions in console
+
+./fastSLAM ../dataset/model_reduced_pointXYZIRNL.xml
+
+run example
