@@ -49,7 +49,7 @@ make
 ## Use Cases
 
 ### fastSLAM
-This DEMO shows the parallel computing for fastSLAM. Each particle containes 3D map built based on registered Velodyne VLP 3D semantic data. The result is corrected trajectory. 
+This DEMO shows the parallel computing for fastSLAM. Each particle containes 3D map built based on registered Velodyne VLP16 3D semantic data. The result is corrected trajectory. 
 
 #### execute
 ./fastSLAM
