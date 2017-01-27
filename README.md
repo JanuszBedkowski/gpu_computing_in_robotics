@@ -56,7 +56,7 @@ This DEMO shows the parallel computing for fastSLAM. Each particle containes 3D 
 
 read instructions in console
 
-to run example
-./fastSLAM ../dataset/model_reduced_pointXYZIRNL.xml
+to run example 
+./fastSLAM ../dataset/model_reduced_pointXYZIRNL.xml   (check help in console, e.g. type c to start computations, software was tested on GF1050Ti, thus for this example the single scan calculation takes up to 40ms)
 
 
