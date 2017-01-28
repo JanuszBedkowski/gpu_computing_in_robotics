@@ -53,7 +53,7 @@ const unsigned int window_height = 512;
 int mouse_old_x, mouse_old_y;
 int mouse_buttons = 0;
 float rotate_x = 0.0, rotate_y = 0.0;
-float translate_z = -20.0;
+float translate_z = -150.0;
 float translate_x, translate_y = 0.0;
 
 pcl::PointCloud<Semantic::PointXYZL> point_cloud_semantic_map;
