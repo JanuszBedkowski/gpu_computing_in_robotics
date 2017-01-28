@@ -77,3 +77,35 @@ All trajectories (particles)
 Best trajectory
 ![fastSLAM-bestTrajectory](images/fastSLAM-bestTrajectory.png)
 
+### particle filter localization
+This DEMO shows the use of GPU for robust robot localization based on 3D semantic data.
+
+#### Execute
+
+Run `./particle_filter_localization_fast` and read instructions in console
+
+to run example
+
+Run ./particle_filter_localization_fast ../dataset/metascan_pointXYZL.pcd ../dataset/odom_and_pointXYZL.xml
+
+(check help in console, e.g. type i to start computations, software was tested on GF1050Ti, thus for this example the single particle filter calculation takes up to 50ms)
+
+**Results**
+
+Here are expected results.
+
+Particle filter localization DEMO init state - 100000 particles.
+![particle_filter_0](images/particle_filter_0.png)
+
+Particle filter localization DEMO after first iteration.
+![particle_filter_1](images/particle_filter_1.png)
+
+Particle filter localization DEMO after some iterations.
+![particle_filter_2](images/particle_filter_2.png)
+
+Particle filter localization DEMO - 500 particles estimating current position.
+![particle_filter_3](images/particle_filter_3.png)
+
+
+
+
