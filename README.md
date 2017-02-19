@@ -29,6 +29,10 @@ Content of the tutorial:
 
 ### Lesson 11: data registration point to projection Iterative Closest Point
 
+...
+
+### Lesson 19: laser range finder simulation
+
 # Requirements
 
 Software was developed and tested on LINUX UBUNTU 14.04 with following libraries
