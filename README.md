@@ -29,6 +29,8 @@ Content of the tutorial:
 
 ### Lesson 11: data registration point to projection Iterative Closest Point
 
+### Lesson 12: data registration Least Square Surface Matching
+
 ...
 
 ### Lesson 19: laser range finder simulation
