@@ -200,12 +200,13 @@ bool CCudaWrapper::registerLS3D(
 	mLS3D = Eigen::Affine3f::Identity();
 
 	Eigen::Affine3f out_mCorrectedTrajectory = Eigen::Affine3f::Identity();
-	int _size = second_point_cloud.size();
 
-	double *A=(double*)malloc( _size* 7 *sizeof(double));
-	double *P = (double*)malloc( _size * sizeof(double));
-	double *l=(double*)malloc( _size *sizeof(double));
-	double *x=(double*)malloc( 7 *sizeof(double));
+	double x[7];
+	double x_temp[7];
+	for(int i = 0 ; i < 7; i ++)
+	{
+		x_temp[i] = 0.0f;
+	}
 
 	Eigen::Vector3f centroid;
 	centroid.x() = 0.0f;
@@ -236,24 +237,6 @@ bool CCudaWrapper::registerLS3D(
 		second_point_cloud[i].y -= centroid.y();
 		second_point_cloud[i].z -= centroid.z();
 	}
-
-	double x_temp[7];
-	for(int i = 0 ; i < 7; i ++)
-	{
-		x_temp[i] = 0.0f;
-	}
-
-	double *d_A = NULL;
-	errCUDA  = cudaMalloc((void**)&d_A,  _size* 7 *sizeof(double));
-	if(errCUDA != ::cudaSuccess){return false;}
-
-	double *d_P = NULL;
-	errCUDA  = cudaMalloc((void**)&d_P,  _size *sizeof(double));
-	if(errCUDA != ::cudaSuccess){return false;}
-
-	double *d_l=NULL;
-	errCUDA  = cudaMalloc((void**)&d_l,  _size *sizeof(double));
-	if(errCUDA != ::cudaSuccess){return false;}
 
 	pcl::PointCloud<lidar_pointcloud::PointProjection> projections;
 	projections.resize(second_point_cloud.size());
@@ -290,21 +273,34 @@ bool CCudaWrapper::registerLS3D(
 		if(projections[i].isProjection == 1)projections_confirmed.push_back(projections[i]);
 	}
 
+	double *d_A = NULL;
+	errCUDA  = cudaMalloc((void**)&d_A,  projections_confirmed.size()* 7 *sizeof(double));
+	if(errCUDA != ::cudaSuccess){return false;}
+
+	double *d_P = NULL;
+	errCUDA  = cudaMalloc((void**)&d_P,  projections_confirmed.size() *sizeof(double));
+	if(errCUDA != ::cudaSuccess){return false;}
+
+	double *d_l=NULL;
+	errCUDA  = cudaMalloc((void**)&d_l,  projections_confirmed.size() *sizeof(double));
+	if(errCUDA != ::cudaSuccess){return false;}
+
 	lidar_pointcloud::PointProjection *d_projections; d_projections = NULL;
+
 	errCUDA = cudaMalloc((void**)&d_projections, projections_confirmed.size()*sizeof(lidar_pointcloud::PointProjection) );
-			if(errCUDA != ::cudaSuccess)return false;
+		if(errCUDA != ::cudaSuccess)return false;
+
 	errCUDA = cudaMemcpy(d_projections, projections_confirmed.points.data(), projections_confirmed.size()*sizeof(lidar_pointcloud::PointProjection), cudaMemcpyHostToDevice);
 		if(errCUDA != ::cudaSuccess)return false;
 
-
-	errCUDA =  fill_A_l_cuda(threads, d_A, x_temp[0], x_temp[1], x_temp[2], 1.0, x_temp[4], x_temp[5], x_temp[6], d_projections, projections_confirmed.size(),
+	errCUDA =  fill_A_l_cuda(threads/2, d_A, x_temp[0], x_temp[1], x_temp[2], 1.0, x_temp[4], x_temp[5], x_temp[6], d_projections, projections_confirmed.size(),
 							d_P, PforGround, PforObstacles, d_l);
 		if(errCUDA != ::cudaSuccess){return false;}
 
 	CCUDA_AX_B_SolverWrapper * wr = new CCUDA_AX_B_SolverWrapper(false, 0);
 
 	CCUDA_AX_B_SolverWrapper::CCUDA_AX_B_SolverWrapper_error errAXB =
-					wr->Solve_ATPA_ATPl_x_data_on_GPU(d_A, d_P, d_l, x, 7, projections_confirmed.size(), solver_method);
+					wr->Solve_ATPA_ATPl_x_data_on_GPU(this->threads, d_A, d_P, d_l, x, 7, projections_confirmed.size(), solver_method);
 	if(errAXB!=CCUDA_AX_B_SolverWrapper::success)
 	{
 		std::cout << "problem with solving Ax=B" << std::endl;
@@ -344,11 +340,6 @@ bool CCudaWrapper::registerLS3D(
 
 	errCUDA = cudaFree(d_l); d_l = 0;
 	if(errCUDA != ::cudaSuccess){return false;}
-
-	free (A);
-	free (l);
-	free (x);
-	free(P);
 return true;
 }
 

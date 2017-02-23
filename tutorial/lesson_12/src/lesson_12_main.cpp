@@ -362,23 +362,23 @@ void keyboard(unsigned char key, int /*x*/, int /*y*/)
         	double PforGround = 1.0;
         	double PforObstacles = 1.0;
 
-        	CCUDA_AX_B_SolverWrapper::Solver_Method solver_method;
+        	CCUDA_AX_B_SolverWrapper::Solver_Method _solver_method;
 
         	switch(solver_method)
         	{
 				case 0:
 				{
-					solver_method = CCUDA_AX_B_SolverWrapper::chol;
+					_solver_method = CCUDA_AX_B_SolverWrapper::chol;
 					break;
 				}
 				case 1:
 				{
-					solver_method = CCUDA_AX_B_SolverWrapper::lu;
+					_solver_method = CCUDA_AX_B_SolverWrapper::lu;
 					break;
 				}
 				case 2:
 				{
-					solver_method = CCUDA_AX_B_SolverWrapper::qr;
+					_solver_method = CCUDA_AX_B_SolverWrapper::qr;
 					break;
 				}
         	}
@@ -392,7 +392,7 @@ void keyboard(unsigned char key, int /*x*/, int /*y*/)
         						max_number_considered_in_INNER_bucket,
         						max_number_considered_in_OUTER_bucket,
         						bounding_box_extension,
-        						CCUDA_AX_B_SolverWrapper::chol,
+        						_solver_method,
         						errCUDA,
         						mLS3D))
         	{

@@ -49,13 +49,13 @@ public:
 	virtual ~CCUDA_AX_B_SolverWrapper();
 
 	double Solve(double *a,double *b,double *x, int a_rows, int a_cols, int b_cols, char method);
-	double Compute_AtP(double *A, double *P, double *AtP, int rows, int columns);
+	double Compute_AtP(int threads, double *A, double *P, double *AtP, int rows, int columns);
 	double Multiply(double *a, double *b,double *c, int a_rows, int a_cols, int b_cols);
 
-	CCUDA_AX_B_SolverWrapper_error Solve_ATPA_ATPl_x(double *A, double *P, double *l,
+	CCUDA_AX_B_SolverWrapper_error Solve_ATPA_ATPl_x(int threads, double *A, double *P, double *l,
 			double *x, int rows, int columns, Solver_Method solver_method);
 
-	CCUDA_AX_B_SolverWrapper_error Solve_ATPA_ATPl_x_data_on_GPU(double *d_A, double *d_P, double *d_l,
+	CCUDA_AX_B_SolverWrapper_error Solve_ATPA_ATPl_x_data_on_GPU(int threads, double *d_A, double *d_P, double *d_l,
 			double *x, int rows, int columns, Solver_Method solver_method);
 	////////////solvers
 	/*

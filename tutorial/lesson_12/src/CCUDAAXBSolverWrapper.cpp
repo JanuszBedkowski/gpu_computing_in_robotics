@@ -195,7 +195,7 @@ return solve_time;
 
 
 
-double CCUDA_AX_B_SolverWrapper::Compute_AtP(double *A, double *P, double *AtP, int rows, int columns)
+double CCUDA_AX_B_SolverWrapper::Compute_AtP(int threads, double *A, double *P, double *AtP, int rows, int columns)
 {
 	clock_t begin_time;
 	double solve_time;
@@ -226,7 +226,7 @@ double CCUDA_AX_B_SolverWrapper::Compute_AtP(double *A, double *P, double *AtP, 
 	if(this->CCUDA_AX_B_SolverWrapperDEBUG)cout_cudaError_t(errCUDA, "cudaMemcpy(d_P, P)");
 	assert(::cudaSuccess == errCUDA);
 
-	errCUDA = cudaCompute_AtP(d_A, d_P, d_AtP, rows, columns);
+	errCUDA = cudaCompute_AtP(threads, d_A, d_P, d_AtP, rows, columns);
 
 	checkCudaErrors(errCUDA = cudaMemcpy(AtP, d_AtP, sizeof(double)*rows*columns, cudaMemcpyDeviceToHost));
 	if(this->CCUDA_AX_B_SolverWrapperDEBUG)cout_cudaError_t(errCUDA, "cudaMemcpy(AtP, d_AtP)");
@@ -321,7 +321,7 @@ double CCUDA_AX_B_SolverWrapper::Multiply(double *a, double *b,double *c, int a_
 }
 
 
-CCUDA_AX_B_SolverWrapper::CCUDA_AX_B_SolverWrapper_error CCUDA_AX_B_SolverWrapper::Solve_ATPA_ATPl_x(double *A, double *P, double *l, double *x,
+CCUDA_AX_B_SolverWrapper::CCUDA_AX_B_SolverWrapper_error CCUDA_AX_B_SolverWrapper::Solve_ATPA_ATPl_x(int threads, double *A, double *P, double *l, double *x,
 		int rows, int columns, CCUDA_AX_B_SolverWrapper::Solver_Method solver_method)
 {
 	double *d_A = NULL;
@@ -344,7 +344,7 @@ CCUDA_AX_B_SolverWrapper::CCUDA_AX_B_SolverWrapper_error CCUDA_AX_B_SolverWrappe
 	errCUDA = cudaMalloc((void **)&d_AtP, sizeof(double)*rows*columns);
 	if(errCUDA != ::cudaSuccess){cudaDeviceReset(); return fail_problem_with_CUDA_AX_B_Solver;}
 
-	errCUDA = cudaCompute_AtP(d_A, d_P, d_AtP, rows, columns);
+	errCUDA = cudaCompute_AtP(threads, d_A, d_P, d_AtP, rows, columns);
 	if(errCUDA != ::cudaSuccess){cudaDeviceReset(); return fail_problem_with_CUDA_AX_B_Solver;}
 
 	if (d_P)
@@ -452,7 +452,7 @@ CCUDA_AX_B_SolverWrapper::CCUDA_AX_B_SolverWrapper_error CCUDA_AX_B_SolverWrappe
 	return success;
 }
 
-CCUDA_AX_B_SolverWrapper::CCUDA_AX_B_SolverWrapper_error CCUDA_AX_B_SolverWrapper::Solve_ATPA_ATPl_x_data_on_GPU(double *d_A, double *d_P, double *d_l,
+CCUDA_AX_B_SolverWrapper::CCUDA_AX_B_SolverWrapper_error CCUDA_AX_B_SolverWrapper::Solve_ATPA_ATPl_x_data_on_GPU(int threads, double *d_A, double *d_P, double *d_l,
 			double *x, int rows, int columns, Solver_Method solver_method)
 {
 	double *d_AtP = NULL;
@@ -460,7 +460,7 @@ CCUDA_AX_B_SolverWrapper::CCUDA_AX_B_SolverWrapper_error CCUDA_AX_B_SolverWrappe
 	errCUDA = cudaMalloc((void **)&d_AtP, sizeof(double)*rows*columns);
 	if(errCUDA != ::cudaSuccess){cudaDeviceReset(); return fail_problem_with_CUDA_AX_B_Solver;}
 
-	errCUDA = cudaCompute_AtP(d_A, d_P, d_AtP, rows, columns);
+	errCUDA = cudaCompute_AtP(threads, d_A, d_P, d_AtP, rows, columns);
 	if(errCUDA != ::cudaSuccess){cudaDeviceReset(); return fail_problem_with_CUDA_AX_B_Solver;}
 
 	double *d_AtPA = NULL;
@@ -536,8 +536,6 @@ CCUDA_AX_B_SolverWrapper::CCUDA_AX_B_SolverWrapper_error CCUDA_AX_B_SolverWrappe
 		errCUDA = cudaFree(d_x);
 		if(errCUDA != ::cudaSuccess){cudaDeviceReset(); return fail_problem_with_CUDA_AX_B_Solver;}
 	}
-	errCUDA = cudaGetLastError();
-	if(errCUDA != ::cudaSuccess){cudaDeviceReset(); return fail_problem_with_CUDA_AX_B_Solver;}
 
 	return success;
 }
@@ -579,7 +577,7 @@ int CCUDA_AX_B_SolverWrapper::linearSolverCHOL(
 	    checkCudaErrors(cudaMemcpy(&h_info, info, sizeof(int), cudaMemcpyDeviceToHost));
 
 	    if ( 0 != h_info ){
-	        fprintf(stderr, "Error: Cholesky factorization failed\n");
+	        fprintf(stderr, "Error: linearSolverCHOL failed\n");
 	    }
 
 	    checkCudaErrors(cudaMemcpy(x, b, sizeof(double)*n, cudaMemcpyDeviceToDevice));
@@ -629,7 +627,7 @@ int CCUDA_AX_B_SolverWrapper::linearSolverLU(
     checkCudaErrors(cudaMemcpy(&h_info, info, sizeof(int), cudaMemcpyDeviceToHost));
 
     if ( 0 != h_info ){
-        fprintf(stderr, "Error: LU factorization failed\n");
+        fprintf(stderr, "Error: linearSolverLU failed\n");
     }
 
     checkCudaErrors(cudaMemcpy(x, b, sizeof(double)*n, cudaMemcpyDeviceToDevice));
@@ -682,7 +680,7 @@ int CCUDA_AX_B_SolverWrapper::linearSolverQR(
     checkCudaErrors(cudaMemcpy(&h_info, info, sizeof(int), cudaMemcpyDeviceToHost));
 
     if ( 0 != h_info ){
-        fprintf(stderr, "Error: LU factorization failed\n");
+        fprintf(stderr, "Error: linearSolverQR failed\n");
     }
 
     checkCudaErrors(cudaMemcpy(x, b, sizeof(double)*n, cudaMemcpyDeviceToDevice));

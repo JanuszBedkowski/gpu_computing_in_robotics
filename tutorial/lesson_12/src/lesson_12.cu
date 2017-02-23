@@ -448,8 +448,9 @@ cudaError_t cudaCalculateProjections(
 		float projections_search_radius,
 		lidar_pointcloud::PointProjection *d_projections)
 {
-	cudaError_t err = cudaGetLastError();
-	if(err != ::cudaSuccess)return err;
+	//cudaError_t err = cudaGetLastError();
+	//if(err != ::cudaSuccess)return err;
+	cudaError_t err = ::cudaSuccess;
 
 	int blocks=number_of_points_second_point_cloud/threads+1;
 
@@ -482,35 +483,14 @@ __global__ void kernel_cudaCompute_AtP(double *d_A, double *d_P, double *d_AtP, 
 	}
 }
 
-cudaError_t cudaCompute_AtP(double *d_A, double *d_P, double *d_AtP, int rows, int columns)
+cudaError_t cudaCompute_AtP(int threads, double *d_A, double *d_P, double *d_AtP, int rows, int columns)
 {
-	cudaError_t err = cudaGetLastError();
-	if(err != ::cudaSuccess)return err;
-
-	cudaDeviceProp prop;
-	int device;
-	err = cudaGetDevice(&device);
-	if(err != ::cudaSuccess)return err;
-
-	err = cudaGetDeviceProperties(&prop,device);
-	if(err != ::cudaSuccess)return err;
-
-	int threads;
-	if(prop.major == 2)
-	{
-		threads=prop.maxThreadsPerBlock/2;
-	}else if(prop.major > 2)
-	{
-		threads=prop.maxThreadsPerBlock;
-	}else
-	{
-		return ::cudaErrorMissingConfiguration;// todo... information is missing
-	}
+	cudaError_t err = ::cudaSuccess;
 
 	kernel_cudaCompute_AtP<<<(rows*columns)/threads+1,threads>>>(d_A, d_P, d_AtP, rows, columns);
 
-	cudaDeviceSynchronize();
-	return cudaGetLastError();
+	err = cudaDeviceSynchronize();
+	return err;
 }
 
 
@@ -634,9 +614,10 @@ __global__ void  kernel_fill_A_l_cuda(double *d_A, double x, double y, double z,
 		d_m[14] = z;
 		d_m[15] = 1.0;
 
-		/////////////////////////////////////////////////////////////////////
+
 		if(p.isProjection == 1)
 		{
+			//printf("la\n");
 			//[dtx  dty  dtz   dm                      dom                    dfi                     dka                   ]
 			//[gx   gy   gz   (gx*a10+gy*a20+gz*a30)  (gx*a11+gy*a21+gz*a31)  (gx*a12+gy*a22+gz*a32)  (gx*a13+gy*a23+gz*a33)]
 
@@ -667,12 +648,10 @@ __global__ void  kernel_fill_A_l_cuda(double *d_A, double x, double y, double z,
 			double a32 = compute_a32(m, om, fi, ka, x0, y0, z0);
 			double a33 = compute_a33(m, r, x0, y0);
 
-
 			double for_dm  = gx*a10+gy*a20+gz*a30;
 			double for_dom = gx*a11+gy*a21+gz*a31;
 			double for_dfi = gx*a12+gy*a22+gz*a32;
 			double for_dka = gx*a13+gy*a23+gz*a33;
-
 
 			d_A[ind + 0 * nop] = gx;
 			d_A[ind + 1 * nop] = gy;
@@ -682,13 +661,13 @@ __global__ void  kernel_fill_A_l_cuda(double *d_A, double x, double y, double z,
 			d_A[ind + 5 * nop] = for_dfi;
 			d_A[ind + 6 * nop] = for_dka;
 
-				if(fabs(p.normal_z) > 0.7)
-				{
-					d_P[ind] = PforGround;
-				}else
-				{
-					d_P[ind] = PforObstacles;
-				}
+			if(fabs(p.normal_z) > 0.7)
+			{
+				d_P[ind] = PforGround;
+			}else
+			{
+				d_P[ind] = PforObstacles;
+			}
 
 			d_l[ind] = p.distance;
 		}else
@@ -710,13 +689,10 @@ __global__ void  kernel_fill_A_l_cuda(double *d_A, double x, double y, double z,
 cudaError_t fill_A_l_cuda(int threads, double *d_A, double x, double y, double z, double m, double om, double fi, double ka,
 		lidar_pointcloud::PointProjection* d_projections, int nop, double *d_P, double PforGround, double PforObstacles, double *d_l)
 {
-	cudaError_t err = cudaGetLastError();
-	if(err != ::cudaSuccess)return err;
-
+	cudaError_t err = ::cudaSuccess;
 	int blocks=nop/threads+1;
-
 	kernel_fill_A_l_cuda<<<blocks,threads>>>(d_A, x, y, z, m, om, fi, ka, d_projections, nop, d_P, PforGround, PforObstacles, d_l);
 
-	cudaDeviceSynchronize();
-	return cudaGetLastError();
+	err = cudaDeviceSynchronize();
+	return err;
 }

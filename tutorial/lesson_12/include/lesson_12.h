@@ -61,7 +61,7 @@ cudaError_t cudaCalculateProjections(
 		float projections_search_radius,
 		lidar_pointcloud::PointProjection *d_projections);
 
-cudaError_t cudaCompute_AtP(double *d_A, double *d_P, double *d_AtP, int rows, int columns);
+cudaError_t cudaCompute_AtP(int threads, double *d_A, double *d_P, double *d_AtP, int rows, int columns);
 
 cudaError_t fill_A_l_cuda(int threads, double *d_A, double x, double y, double z, double m, double om, double fi, double ka,
 		lidar_pointcloud::PointProjection* d_projections, int nop, double *d_P, double PforGround, double PforObstacles, double *d_l);
