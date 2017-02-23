@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Model>
+ <DatasetPath>data_processed</DatasetPath>
+ <Algorithms>
+  <name>point_cloud_classification_main_input_PointXYZIR_output_PointXYZIRNL</name>
+ </Algorithms>
+ <Transformations>
+  <scan000>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.962429 0.271532 0 0 -0.271532 -0.962429 0 0 0 0 1 0 -9.99799 16.3198 0.4 1 </Data>
+   </Affine>
+   <cloudname>scan000.pcd</cloudname>
+  </scan000>
+  <scan001>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.52845 -0.848965 -0 0 0.848965 -0.52845 0 0 0 -0 1 0 -13.6871 15.1485 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan001.pcd</cloudname>
+  </scan001>
+  <scan002>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.527925 -0.849291 -0 0 0.849291 -0.527925 0 0 0 -0 1 0 -15.5719 11.3494 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan002.pcd</cloudname>
+  </scan002>
+  <scan003>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.52893 -0.848666 -0 0 0.848666 -0.52893 0 0 0 -0 1 0 -18.8645 4.66148 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan003.pcd</cloudname>
+  </scan003>
+  <scan004>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.457779 -0.889066 -0 0 0.889066 -0.457779 0 0 0 -0 1 0 -22.4751 -3.22381 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan004.pcd</cloudname>
+  </scan004>
+  <scan005>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.457004 -0.889465 -0 0 0.889465 -0.457004 0 0 0 -0 1 0 -24.6926 -8.84573 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan005.pcd</cloudname>
+  </scan005>
+  <scan006>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.303873 -0.952713 -0 0 0.952713 -0.303873 0 0 0 -0 1 0 -25.9878 -15.5617 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan006.pcd</cloudname>
+  </scan006>
+  <scan007>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.301936 -0.953328 -0 0 0.953328 -0.301936 0 0 0 -0 1 0 -27.1008 -20.8264 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan007.pcd</cloudname>
+  </scan007>
+  <scan008>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.42762 -0.903958 -0 0 0.903958 -0.42762 0 0 0 -0 1 0 -28.519 -26.3895 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan008.pcd</cloudname>
+  </scan008>
+  <scan009>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.348484 -0.937315 -0 0 0.937315 -0.348484 0 0 0 -0 1 0 -30.0874 -30.7198 0.385056 1 </Data>
+   </Affine>
+   <cloudname>scan009.pcd</cloudname>
+  </scan009>
+  <scan010>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.141966 -0.989872 -0 0 0.989872 -0.141966 0 0 0 -0 1 0 -30.6952 -39.9357 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan010.pcd</cloudname>
+  </scan010>
+  <scan011>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.106338 -0.99433 -0 0 0.99433 -0.106338 0 0 0 -0 1 0 -30.9451 -45.7603 0.268521 1 </Data>
+   </Affine>
+   <cloudname>scan011.pcd</cloudname>
+  </scan011>
+  <scan012>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.136737 -0.990607 -0 0 0.990607 -0.136737 0 0 0 -0 1 0 -31.2713 -53.9387 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan012.pcd</cloudname>
+  </scan012>
+  <scan013>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.13604 -0.990703 -0 0 0.990703 -0.13604 0 0 0 -0 1 0 -31.543 -61.3296 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan013.pcd</cloudname>
+  </scan013>
+  <scan014>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.0409444 -0.999161 -0 0 0.999161 -0.0409444 0 0 0 -0 1 0 -28.0928 -81.5422 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan014.pcd</cloudname>
+  </scan014>
+  <scan015>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.105062 -0.994466 -0 0 0.994466 0.105062 0 0 0 -0 1 0 -26.6544 -90.4423 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan015.pcd</cloudname>
+  </scan015>
+  <scan016>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.10695 -0.994264 -0 0 0.994264 0.10695 0 0 0 -0 1 0 -25.6484 -95.2655 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan016.pcd</cloudname>
+  </scan016>
+  <scan017>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.312841 -0.949806 -0 0 0.949806 0.312841 0 0 0 -0 1 0 -23.1857 -102.384 0.353737 1 </Data>
+   </Affine>
+   <cloudname>scan017.pcd</cloudname>
+  </scan017>
+  <scan018>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.332828 -0.942987 -0 0 0.942987 0.332828 0 0 0 -0 1 0 -19.7319 -112.76 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan018.pcd</cloudname>
+  </scan018>
+  <scan019>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.332827 -0.942988 -0 0 0.942988 0.332827 0 0 0 -0 1 0 -17.6188 -117.253 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan019.pcd</cloudname>
+  </scan019>
+  <scan020>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.862385 -0.506253 -0 0 0.506253 0.862385 0 0 0 -0 1 0 -12.4121 -120.62 0.396557 1 </Data>
+   </Affine>
+   <cloudname>scan020.pcd</cloudname>
+  </scan020>
+  <scan021>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.877627 0.479344 0 0 -0.479344 0.877627 0 0 0 0 1 0 -7.83886 -121.225 0.247984 1 </Data>
+   </Affine>
+   <cloudname>scan021.pcd</cloudname>
+  </scan021>
+  <scan022>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.883816 0.467835 0 0 -0.467835 0.883816 0 0 0 0 1 0 -3.64487 -118.473 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan022.pcd</cloudname>
+  </scan022>
+  <scan023>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.906366 0.422493 0 0 -0.422493 0.906366 0 0 0 0 1 0 3.54412 -113.133 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan023.pcd</cloudname>
+  </scan023>
+  <scan024>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.914525 0.40453 0 0 -0.40453 0.914525 0 0 0 0 1 0 8.43306 -110.48 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan024.pcd</cloudname>
+  </scan024>
+  <scan025>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.893758 0.448549 0 0 -0.448549 0.893758 0 0 0 0 1 0 15.2228 -106.446 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan025.pcd</cloudname>
+  </scan025>
+  <scan026>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.894579 0.446909 0 0 -0.446909 0.894579 0 0 0 0 1 0 17.4767 -105.018 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan026.pcd</cloudname>
+  </scan026>
+  <scan027>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.863662 0.504072 0 0 -0.504072 0.863662 0 0 0 0 1 0 27.7432 -96.2342 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan027.pcd</cloudname>
+  </scan027>
+  <scan028>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.449747 0.893156 0 0 -0.893156 -0.449747 0 0 0 0 1 0 25.5788 -90.8361 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan028.pcd</cloudname>
+  </scan028>
+  <scan029>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.391625 0.920125 0 0 -0.920125 -0.391625 0 0 0 0 1 0 21.3453 -82.6903 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan029.pcd</cloudname>
+  </scan029>
+  <scan030>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.437455 0.89924 0 0 -0.89924 -0.437455 0 0 0 0 1 0 16.2939 -74.6941 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan030.pcd</cloudname>
+  </scan030>
+  <scan031>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.462215 0.886768 0 0 -0.886768 -0.462215 0 0 0 0 1 0 11.2798 -65.9742 0.346658 1 </Data>
+   </Affine>
+   <cloudname>scan031.pcd</cloudname>
+  </scan031>
+  <scan032>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.518898 0.854836 0 0 -0.854836 -0.518898 0 0 0 0 1 0 7.08348 -58.7136 0.367859 1 </Data>
+   </Affine>
+   <cloudname>scan032.pcd</cloudname>
+  </scan032>
+  <scan033>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.511719 0.859153 0 0 -0.859153 -0.511719 0 0 0 0 1 0 1.84175 -50.7811 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan033.pcd</cloudname>
+  </scan033>
+  <scan034>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.515803 0.856707 0 0 -0.856707 -0.515803 0 0 0 0 1 0 -1.20118 -46.6852 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan034.pcd</cloudname>
+  </scan034>
+  <scan035>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.488051 0.872815 0 0 -0.872815 -0.488051 0 0 0 0 1 0 -5.52878 -40.6999 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan035.pcd</cloudname>
+  </scan035>
+  <scan036>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.514403 0.857549 0 0 -0.857549 -0.514403 0 0 0 0 1 0 -15.9633 -27.272 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan036.pcd</cloudname>
+  </scan036>
+  <scan037>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.515026 0.857175 0 0 -0.857175 -0.515026 0 0 0 0 1 0 -19.4476 -22.5897 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan037.pcd</cloudname>
+  </scan037>
+  <scan038>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.477931 0.878398 0 0 -0.878398 -0.477931 0 0 0 0 1 0 -24.625 -15.5285 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan038.pcd</cloudname>
+  </scan038>
+  <scan039>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.476344 0.879259 0 0 -0.879259 -0.476344 0 0 0 0 1 0 -26.306 -13.0559 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan039.pcd</cloudname>
+  </scan039>
+  <scan040>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.568134 0.822936 0 0 -0.822936 -0.568134 0 0 0 0 1 0 -29.0872 -9.18226 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan040.pcd</cloudname>
+  </scan040>
+  <scan041>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.562699 0.826662 0 0 -0.826662 -0.562699 0 0 0 0 1 0 -33.4325 -4.06855 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan041.pcd</cloudname>
+  </scan041>
+  <scan042>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.530077 0.847949 0 0 -0.847949 -0.530077 0 0 0 0 1 0 -43.4253 8.09431 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan042.pcd</cloudname>
+  </scan042>
+  <scan043>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.651672 0.758501 0 0 -0.758501 -0.651672 0 0 0 0 1 0 -50.1277 15.6603 0.366834 1 </Data>
+   </Affine>
+   <cloudname>scan043.pcd</cloudname>
+  </scan043>
+  <scan044>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.545757 0.837943 0 0 -0.837943 -0.545757 0 0 0 0 1 0 -53.7897 19.9578 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan044.pcd</cloudname>
+  </scan044>
+  <scan045>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.558255 0.829669 0 0 -0.829669 -0.558255 0 0 0 0 1 0 -60.712 28.8694 0.265236 1 </Data>
+   </Affine>
+   <cloudname>scan045.pcd</cloudname>
+  </scan045>
+  <scan046>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.532173 0.846635 0 0 -0.846635 -0.532173 0 0 0 0 1 0 -66.5788 36.4394 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan046.pcd</cloudname>
+  </scan046>
+  <scan047>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.537101 0.843518 0 0 -0.843518 -0.537101 0 0 0 0 1 0 -70.731 41.7751 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan047.pcd</cloudname>
+  </scan047>
+  <scan048>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.464921 0.885352 0 0 -0.885352 -0.464921 0 0 0 0 1 0 -74.6323 48.3887 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan048.pcd</cloudname>
+  </scan048>
+  <scan049>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.497293 0.867583 0 0 -0.867583 -0.497293 0 0 0 0 1 0 -79.7589 55.3696 0.267071 1 </Data>
+   </Affine>
+   <cloudname>scan049.pcd</cloudname>
+  </scan049>
+  <scan050>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.894634 -0.4468 0 0 0.4468 -0.894634 0 0 0 0 1 0 -86.1933 60.0989 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan050.pcd</cloudname>
+  </scan050>
+  <scan051>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.892819 -0.450417 0 0 0.450417 -0.892819 0 0 0 0 1 0 -91.8502 56.6738 0.287723 1 </Data>
+   </Affine>
+   <cloudname>scan051.pcd</cloudname>
+  </scan051>
+  <scan052>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.90266 -0.430355 0 0 0.430355 -0.90266 0 0 0 0 1 0 -97.5112 51.6339 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan052.pcd</cloudname>
+  </scan052>
+  <scan053>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.888085 -0.45968 0 0 0.45968 -0.888085 0 0 0 0 1 0 -107.6 45.2939 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan053.pcd</cloudname>
+  </scan053>
+  <scan054>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.8719 -0.489684 0 0 0.489684 -0.8719 0 0 0 0 1 0 -114.887 41.0807 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan054.pcd</cloudname>
+  </scan054>
+  <scan055>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.882114 -0.471035 0 0 0.471035 -0.882114 0 0 0 0 1 0 -119.217 37.4389 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan055.pcd</cloudname>
+  </scan055>
+  <scan056>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>-0.615306 -0.788289 0 0 0.788289 -0.615306 0 0 0 0 1 0 -126.488 29.6359 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan056.pcd</cloudname>
+  </scan056>
+  <scan057>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.131871 -0.981639 0.137821 0 0.990916 0.134241 0.008002 0 -0.026357 0.135513 0.990425 0 -128.182 25.1076 -0.458734 1 </Data>
+   </Affine>
+   <cloudname>scan057.pcd</cloudname>
+  </scan057>
+  <scan058>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.156262 -0.987716 0 0 0.987716 0.156262 0 0 0 0 1 0 -126.3 23.3391 0.271064 1 </Data>
+   </Affine>
+   <cloudname>scan058.pcd</cloudname>
+  </scan058>
+  <scan059>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.578625 -0.815594 0 0 0.815594 0.578625 0 0 0 0 1 0 -121.828 15.9641 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan059.pcd</cloudname>
+  </scan059>
+  <scan060>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.536273 -0.844044 0 0 0.844044 0.536273 0 0 0 0 1 0 -116.714 10.2541 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan060.pcd</cloudname>
+  </scan060>
+  <scan061>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.515771 -0.856727 0 0 0.856727 0.515771 0 0 0 0 1 0 -112.134 6.44479 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan061.pcd</cloudname>
+  </scan061>
+  <scan062>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.556717 -0.830702 0 0 0.830702 0.556717 0 0 0 0 1 0 -106.094 0.233482 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan062.pcd</cloudname>
+  </scan062>
+  <scan063>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.547041 -0.837106 0 0 0.837106 0.547041 0 0 0 0 1 0 -105.282 -0.526365 0.392658 1 </Data>
+   </Affine>
+   <cloudname>scan063.pcd</cloudname>
+  </scan063>
+  <scan064>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.520682 -0.853751 0 0 0.853751 0.520682 0 0 0 0 1 0 -100.768 -8.03223 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan064.pcd</cloudname>
+  </scan064>
+  <scan065>
+   <Affine>
+    <Type>matrix4f</Type>
+    <Data>0.575309 -0.817936 0 0 0.817936 0.575309 0 0 0 0 1 0 -95.8686 -11.9399 0.2 1 </Data>
+   </Affine>
+   <cloudname>scan065.pcd</cloudname>
+  </scan065>
+ </Transformations>
+</Model>
