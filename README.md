@@ -29,7 +29,9 @@ Content of the tutorial:
 
 ### Lesson 11: data registration point to projection Iterative Closest Point
 
-### Lesson 12: data registration Least Square Surface Matching
+### Lesson 12: data registration Least Square Surface Matching (Ax=B solver on GPU)
+
+### Lesson 13: data registration Plane To Plane (Ax=B solver on GPU)
 
 ...
 
