@@ -358,17 +358,19 @@ void registerDataCUDA()
 	for(size_t i = 0 ; i < v_observations.size() ; i++)
 	{
 		pair_local_observations_t pair;
+		pair.m_pose = v_observations[i].m_pose;
+		pair.om = v_observations[i].om;
+		pair.fi = v_observations[i].fi;
+		pair.ka = v_observations[i].ka;
+		pair.tx = v_observations[i].tx;
+		pair.ty = v_observations[i].ty;
+		pair.tz = v_observations[i].tz;
+
 		for(size_t j = 0 ; j < v_observations.size() ; j++)
 		{
 			if(i!=j)
 			{
-				pair.m_pose = v_observations[i].m_pose;
-				pair.om = v_observations[i].om;
-				pair.fi = v_observations[i].fi;
-				pair.ka = v_observations[i].ka;
-				pair.tx = v_observations[i].tx;
-				pair.ty = v_observations[i].ty;
-				pair.tz = v_observations[i].tz;
+
 
 				for(size_t k = 0 ; k < v_observations[j].planes.size(); k++)
 				{
