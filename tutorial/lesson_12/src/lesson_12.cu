@@ -278,8 +278,6 @@ __global__ void  kernel_calculateProjections (
 		d_projections[index_of_point_second_point_cloud].normal_y = 0.0f;
 		d_projections[index_of_point_second_point_cloud].normal_z = 0.0f;
 
-
-
 		if(x_second_point_cloud < rgd_params.bounding_box_min_X || x_second_point_cloud > rgd_params.bounding_box_max_X)
 		{
 			d_projections[index_of_point_second_point_cloud].isProjection = 0;
@@ -448,8 +446,6 @@ cudaError_t cudaCalculateProjections(
 		float projections_search_radius,
 		lidar_pointcloud::PointProjection *d_projections)
 {
-	//cudaError_t err = cudaGetLastError();
-	//if(err != ::cudaSuccess)return err;
 	cudaError_t err = ::cudaSuccess;
 
 	int blocks=number_of_points_second_point_cloud/threads+1;
@@ -592,97 +588,48 @@ __global__ void  kernel_fill_A_l_cuda(double *d_A, double x, double y, double z,
 
 		double r[9];
 		computeR(om, fi, ka, r);
+		double gx = p.normal_x;
+		double gy = p.normal_y;
+		double gz = p.normal_z;
+		double x0 = p.x0;
+		double y0 = p.y0;
+		double z0 = p.z0;
 
-		double d_m[16];
-		d_m[0] = r[0];
-		d_m[1] = r[3];
-		d_m[2] = r[6];
-		d_m[3] = 0.0;
+		double a10 = compute_a10(r, x0, y0, z0);
+		double a20 = compute_a20(r, x0, y0, z0);
+		double a30 = compute_a30(r, x0, y0, z0);
+		double a11 = compute_a11();
+		double a12 = compute_a12(m, om, fi, ka, x0, y0, z0);
+		double a13 = compute_a13(m, r, x0, y0);
+		double a21 = compute_a21(m, r, x0, y0, z0);
+		double a22 = compute_a22(m, om, fi, ka, x0, y0, z0);
+		double a23 = compute_a23(m, r, x0, y0);
+		double a31 = compute_a31(m, r, x0, y0, z0);
+		double a32 = compute_a32(m, om, fi, ka, x0, y0, z0);
+		double a33 = compute_a33(m, r, x0, y0);
 
-		d_m[4] = r[1];
-		d_m[5] = r[4];
-		d_m[6] = r[7];
-		d_m[7] = 0.0;
+		double for_dm  = gx*a10+gy*a20+gz*a30;
+		double for_dom = gx*a11+gy*a21+gz*a31;
+		double for_dfi = gx*a12+gy*a22+gz*a32;
+		double for_dka = gx*a13+gy*a23+gz*a33;
 
-		d_m[8] = r[2];
-		d_m[9] = r[5];
-		d_m[10] = r[8];
-		d_m[11] = 0.0;
+		d_A[ind + 0 * nop] = gx;
+		d_A[ind + 1 * nop] = gy;
+		d_A[ind + 2 * nop] = gz;
+		d_A[ind + 3 * nop] = for_dm;
+		d_A[ind + 4 * nop] = for_dom;
+		d_A[ind + 5 * nop] = for_dfi;
+		d_A[ind + 6 * nop] = for_dka;
 
-		d_m[12] = x;
-		d_m[13] = y;
-		d_m[14] = z;
-		d_m[15] = 1.0;
-
-
-		if(p.isProjection == 1)
+		if(fabs(p.normal_z) > 0.7)
 		{
-			//printf("la\n");
-			//[dtx  dty  dtz   dm                      dom                    dfi                     dka                   ]
-			//[gx   gy   gz   (gx*a10+gy*a20+gz*a30)  (gx*a11+gy*a21+gz*a31)  (gx*a12+gy*a22+gz*a32)  (gx*a13+gy*a23+gz*a33)]
-
-			double gx = p.normal_x;
-			double gy = p.normal_y;
-			double gz = p.normal_z;
-
-			double v[3] = {p.x_src, p.y_src, p.z_src};
-			double vt[3];
-			vt[0]=d_m[0]*v[0]+d_m[4]*v[1]+d_m[8]*v[2]+d_m[12];
-			vt[1]=d_m[1]*v[0]+d_m[5]*v[1]+d_m[9]*v[2]+d_m[13];
-			vt[2]=d_m[2]*v[0]+d_m[6]*v[1]+d_m[10]*v[2]+d_m[14];
-
-			double x0 = vt[0] - p.normal_x * p.distance;
-			double y0 = vt[1] - p.normal_y * p.distance;
-			double z0 = vt[2] - p.normal_z * p.distance;
-
-			double a10 = compute_a10(r, x0, y0, z0);
-			double a20 = compute_a20(r, x0, y0, z0);
-			double a30 = compute_a30(r, x0, y0, z0);
-			double a11 = compute_a11();
-			double a12 = compute_a12(m, om, fi, ka, x0, y0, z0);
-			double a13 = compute_a13(m, r, x0, y0);
-			double a21 = compute_a21(m, r, x0, y0, z0);
-			double a22 = compute_a22(m, om, fi, ka, x0, y0, z0);
-			double a23 = compute_a23(m, r, x0, y0);
-			double a31 = compute_a31(m, r, x0, y0, z0);
-			double a32 = compute_a32(m, om, fi, ka, x0, y0, z0);
-			double a33 = compute_a33(m, r, x0, y0);
-
-			double for_dm  = gx*a10+gy*a20+gz*a30;
-			double for_dom = gx*a11+gy*a21+gz*a31;
-			double for_dfi = gx*a12+gy*a22+gz*a32;
-			double for_dka = gx*a13+gy*a23+gz*a33;
-
-			d_A[ind + 0 * nop] = gx;
-			d_A[ind + 1 * nop] = gy;
-			d_A[ind + 2 * nop] = gz;
-			d_A[ind + 3 * nop] = for_dm;
-			d_A[ind + 4 * nop] = for_dom;
-			d_A[ind + 5 * nop] = for_dfi;
-			d_A[ind + 6 * nop] = for_dka;
-
-			if(fabs(p.normal_z) > 0.7)
-			{
-				d_P[ind] = PforGround;
-			}else
-			{
-				d_P[ind] = PforObstacles;
-			}
-
-			d_l[ind] = p.distance;
+			d_P[ind] = PforGround;
 		}else
 		{
-			d_A[ind + 0 * nop] = 0.0;
-			d_A[ind + 1 * nop] = 0.0;
-			d_A[ind + 2 * nop] = 0.0;
-			d_A[ind + 3 * nop] = 0.0;
-			d_A[ind + 4 * nop] = 0.0;
-			d_A[ind + 5 * nop] = 0.0;
-			d_A[ind + 6 * nop] = 0.0;
-
-			d_P[ind] = 0.0;
-			d_l[ind] = 0.0;
+			d_P[ind] = PforObstacles;
 		}
+
+		d_l[ind] = p.distance;
 	}
 }
 

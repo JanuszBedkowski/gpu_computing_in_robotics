@@ -184,94 +184,113 @@ bool CCudaWrapper::compute_projections( 	pcl::PointCloud<lidar_pointcloud::Point
 return true;
 }
 
-bool CCudaWrapper::registerLS3D(
-						pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> first_point_cloud,
-						pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> second_point_cloud,
-						float projections_search_radius,
-						double PforGround,
-						double PforObstacles,
-						int max_number_considered_in_INNER_bucket,
-						int max_number_considered_in_OUTER_bucket,
-						float bounding_box_extension,
-						CCUDA_AX_B_SolverWrapper::Solver_Method solver_method,
-						cudaError_t &errCUDA,
-						Eigen::Affine3f &mLS3D)
+void CCudaWrapper::Matrix4ToEuler(const double *alignxf, double *rPosTheta, double *rPos)
 {
-	mLS3D = Eigen::Affine3f::Identity();
+	double _trX, _trY;
 
-	Eigen::Affine3f out_mCorrectedTrajectory = Eigen::Affine3f::Identity();
+	if(alignxf[0] > 0.0)
+	{
+		rPosTheta[1] = asin(alignxf[8]);
+	}
+	else
+	{
+		rPosTheta[1] = M_PI - asin(alignxf[8]);
+	}
+
+	double  C    =  cos( rPosTheta[1] );
+	if ( fabs( C ) > 0.005 )
+	{                 // Gimball lock?
+		_trX      =  alignxf[10] / C;             // No, so get X-axis angle
+		_trY      =  -alignxf[9] / C;
+		rPosTheta[0]  = atan2( _trY, _trX );
+		_trX      =  alignxf[0] / C;              // Get Z-axis angle
+		_trY      = -alignxf[4] / C;
+		rPosTheta[2]  = atan2( _trY, _trX );
+	}
+	else
+	{                                    // Gimball lock has occurred
+		rPosTheta[0] = 0.0;                       // Set X-axis angle to zero
+		_trX      =  alignxf[5];  //1                // And calculate Z-axis angle
+		_trY      =  alignxf[1];  //2
+		rPosTheta[2]  = atan2( _trY, _trX );
+	}
+
+	rPosTheta[0] = rPosTheta[0];
+	rPosTheta[1] = rPosTheta[1];
+	rPosTheta[2] = rPosTheta[2];
+
+	if (rPos != 0)
+	{
+		rPos[0] = alignxf[12];
+		rPos[1] = alignxf[13];
+		rPos[2] = alignxf[14];
+	}
+}
+
+void CCudaWrapper::Matrix4ToEuler(Eigen::Affine3f m, Eigen::Vector3f &omfika, Eigen::Vector3f &xyz)
+{
+	double _trX, _trY;
+
+	if(m(0,0) > 0.0)
+	{
+		omfika.y() = asin(m(0,2));
+	}
+	else
+	{
+		omfika.y() = M_PI - asin(m(0,2));
+	}
+
+	double  C    =  cos( omfika.y() );
+	if ( fabs( C ) > 0.005 )
+	{                 // Gimball lock?
+		_trX      =  m(2,2) / C;             // No, so get X-axis angle
+		_trY      =  -m(1,2) / C;
+		omfika.x()  = atan2( _trY, _trX );
+		_trX      =  m(0,0) / C;              // Get Z-axis angle
+		_trY      = -m(0,1) / C;
+		omfika.z()= atan2( _trY, _trX );
+	}
+	else
+	{                                    // Gimball lock has occurred
+		omfika.x() = 0.0;                       // Set X-axis angle to zero
+		_trX      =  m(1,1);  //1                // And calculate Z-axis angle
+		_trY      =  m(1,0);  //2
+		omfika.z() = atan2( _trY, _trX );
+	}
+
+	xyz.x() = m(0,3);
+	xyz.y() = m(1,3);
+	xyz.z() = m(2,3);
+}
+
+void CCudaWrapper::EulerToMatrix(Eigen::Vector3f omfika, Eigen::Vector3f xyz, Eigen::Affine3f &m)
+{
+	Eigen::Affine3f mR;
+	mR = Eigen::AngleAxisf(omfika.x(), Eigen::Vector3f::UnitX())
+		  * Eigen::AngleAxisf(omfika.y(), Eigen::Vector3f::UnitY())
+		  * Eigen::AngleAxisf(omfika.z(), Eigen::Vector3f::UnitZ());
+	Eigen::Affine3f mT(Eigen::Translation3f(xyz.x(), xyz.y(), xyz.z()));
+	m = mT * mR;
+}
+
+bool CCudaWrapper::registerLS3D(observations_LS3D_t &obs)
+{
+	std::cout << "CCudaWrapper::registerLS3D" << std::endl;
+	cudaError_t errCUDA = ::cudaSuccess;
+	CCUDA_AX_B_SolverWrapper::Solver_Method solver_method = CCUDA_AX_B_SolverWrapper::chol;
+
+	double PforGround = 1.0;
+	double PforObstacles = 1.0;
 
 	double x[7];
-	double x_temp[7];
-	for(int i = 0 ; i < 7; i ++)
-	{
-		x_temp[i] = 0.0f;
-	}
-
-	Eigen::Vector3f centroid;
-	centroid.x() = 0.0f;
-	centroid.y() = 0.0f;
-	centroid.z() = 0.0f;
-
-	for(size_t i = 0; i < second_point_cloud.size(); i++)
-	{
-		centroid.x() += second_point_cloud[i].x;
-		centroid.y() += second_point_cloud[i].y;
-		centroid.z() += second_point_cloud[i].z;
-	}
-	centroid.x()/=second_point_cloud.size();
-	centroid.y()/=second_point_cloud.size();
-	centroid.z()/=second_point_cloud.size();
-
-	Eigen::Affine3f mTcentroid(Eigen::Translation3f(centroid.x(), centroid.y(), centroid.z()));
-
-	for(size_t i = 0; i < first_point_cloud.size(); i++)
-	{
-		first_point_cloud[i].x -= centroid.x();
-		first_point_cloud[i].y -= centroid.y();
-		first_point_cloud[i].z -= centroid.z();
-	}
-	for(size_t i = 0; i < second_point_cloud.size(); i++)
-	{
-		second_point_cloud[i].x -= centroid.x();
-		second_point_cloud[i].y -= centroid.y();
-		second_point_cloud[i].z -= centroid.z();
-	}
-
-	pcl::PointCloud<lidar_pointcloud::PointProjection> projections;
-	projections.resize(second_point_cloud.size());
-
-	if(!this->compute_projections(
-			first_point_cloud,
-			second_point_cloud,
-			projections_search_radius,
-			bounding_box_extension,
-			max_number_considered_in_INNER_bucket,
-			max_number_considered_in_OUTER_bucket,
-			projections))
-	{
-		return false;
-	}
-
-	int number_of_projections = 0;
-	for(size_t i = 0 ; i < projections.size(); i++)
-	{
-		if(projections[i].isProjection == 1)number_of_projections++;
-	}
-
-	std::cout << "number of projections: " << number_of_projections << std::endl;
-
-	if(number_of_projections < 10)
-	{
-		std::cout << "number_of_projections < 10  return" << std::endl;
-		return false;
-	}
 
 	pcl::PointCloud<lidar_pointcloud::PointProjection> projections_confirmed;
-	for(size_t i = 0 ; i < projections.size(); i++)
+	for(size_t i = 0 ; i < obs.projections.size(); i++)
 	{
-		if(projections[i].isProjection == 1)projections_confirmed.push_back(projections[i]);
+		if(obs.projections[i].isProjection == 1)projections_confirmed.push_back(obs.projections[i]);
 	}
+
+	std::cout << projections_confirmed.size() << std::endl;
 
 	double *d_A = NULL;
 	errCUDA  = cudaMalloc((void**)&d_A,  projections_confirmed.size()* 7 *sizeof(double));
@@ -293,7 +312,7 @@ bool CCudaWrapper::registerLS3D(
 	errCUDA = cudaMemcpy(d_projections, projections_confirmed.points.data(), projections_confirmed.size()*sizeof(lidar_pointcloud::PointProjection), cudaMemcpyHostToDevice);
 		if(errCUDA != ::cudaSuccess)return false;
 
-	errCUDA =  fill_A_l_cuda(threads/2, d_A, x_temp[0], x_temp[1], x_temp[2], 1.0, x_temp[4], x_temp[5], x_temp[6], d_projections, projections_confirmed.size(),
+	errCUDA =  fill_A_l_cuda(threads/2, d_A, obs.tx, obs.ty, obs.tz, 1.0, obs.om, obs.fi, obs.ka, d_projections, projections_confirmed.size(),
 							d_P, PforGround, PforObstacles, d_l);
 		if(errCUDA != ::cudaSuccess){return false;}
 
@@ -312,25 +331,11 @@ bool CCudaWrapper::registerLS3D(
 	errCUDA = cudaFree(d_projections); d_projections = 0;
 		if(errCUDA != ::cudaSuccess){return false;}
 
-	for(int i = 0 ; i < 7; i ++)
-	{
-		x_temp[i] -= x[i];
-	}
-
 	std::cout << "Ax=B solution:" << std::endl;
 	for(int i = 0 ; i < 7; i++)
 	{
-		std::cout << "x[" << i <<"]: " << x_temp[i] << std::endl;
+		std::cout << "x[" << i <<"]: " << x[i] << std::endl;
 	}
-
-	Eigen::Affine3f mR;
-	mR = Eigen::AngleAxisf(x_temp[4], Eigen::Vector3f::UnitX())
-		  * Eigen::AngleAxisf(x_temp[5], Eigen::Vector3f::UnitY())
-		  * Eigen::AngleAxisf(x_temp[6], Eigen::Vector3f::UnitZ());
-	Eigen::Affine3f mT(Eigen::Translation3f(x_temp[0], x_temp[1], x_temp[2]));
-	out_mCorrectedTrajectory = mT * mR;
-
-	mLS3D = mTcentroid * out_mCorrectedTrajectory * mTcentroid.inverse();
 
 	errCUDA = cudaFree(d_A); d_A = 0;
 	if(errCUDA != ::cudaSuccess){return false;}
@@ -340,7 +345,13 @@ bool CCudaWrapper::registerLS3D(
 
 	errCUDA = cudaFree(d_l); d_l = 0;
 	if(errCUDA != ::cudaSuccess){return false;}
-return true;
+
+	obs.tx -= x[0];
+	obs.ty -= x[1];
+	obs.tz -= x[2];
+	obs.om -= x[4];
+    obs.fi -= x[5];
+    obs.ka -= x[6];
+
+	return true;
 }
-
-

@@ -73,6 +73,8 @@ int pointSize = 1;
 int solver_method = 0;
 pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> point_cloud_1;
 pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> point_cloud_2;
+Eigen::Affine3f m_pose1;
+Eigen::Affine3f m_pose2;
 pcl::PointCloud<lidar_pointcloud::PointProjection> projections;
 
 float projections_search_radius = 0.5f;
@@ -89,13 +91,18 @@ void printHelp()
 	std::cout << "4: RENDER_TYPE_3D_POINTS_AND_PROJECTIONS_V2" << std::endl;
 	std::cout << "+: increase point size" << std::endl;
 	std::cout << "-: decrease point size" << std::endl;
-	std::cout << "r: register with LS3D" << std::endl;
-	std::cout << "p: compute projections" << std::endl;
+	std::cout << "r: register with LS3D obs1 to obs2;" << std::endl;
+	std::cout << "t: register with LS3D obs2 to obs1;" << std::endl;
+	std::cout << "o: compute projections obs2 to obs1" << std::endl;
+	std::cout << "p: compute projections obs1 to obs2" << std::endl;
 }
 
 void transformPointCloud(pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> &pointcloud, Eigen::Affine3f transform);
 bool loadData(std::string filename, std::string scan_name_1, std::string scan_name_2,
 		pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> &_point_cloud_1, pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> &_point_cloud_2);
+
+void register_obs1_to_obs2();
+void register_obs2_to_obs1();
 
 int
 main(int argc, char **argv)
@@ -176,6 +183,11 @@ bool initGL(int *argc, char **argv)
 
 void display()
 {
+	pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> r_point_cloud_1 = point_cloud_1;
+	pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> r_point_cloud_2 = point_cloud_2;
+	transformPointCloud(r_point_cloud_1, m_pose1);
+	transformPointCloud(r_point_cloud_2, m_pose2);
+
 	glPointSize(pointSize);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -206,17 +218,17 @@ void display()
 		{
 			glColor3f(1.0f, 0.0f, 0.0f);
 			glBegin(GL_POINTS);
-			for(size_t j = 0; j < point_cloud_1.size(); j++)
+			for(size_t j = 0; j < r_point_cloud_1.size(); j++)
 			{
-					glVertex3f(point_cloud_1[j].x, point_cloud_1[j].y, point_cloud_1[j].z);
+					glVertex3f(r_point_cloud_1[j].x, r_point_cloud_1[j].y, r_point_cloud_1[j].z);
 			}
 			glEnd();
 
 			glColor3f(0.0f, 0.0f, 1.0f);
 			glBegin(GL_POINTS);
-			for(size_t j = 0; j < point_cloud_2.size(); j++)
+			for(size_t j = 0; j < r_point_cloud_2.size(); j++)
 			{
-					glVertex3f(point_cloud_2[j].x, point_cloud_2[j].y, point_cloud_2[j].z);
+					glVertex3f(r_point_cloud_2[j].x, r_point_cloud_2[j].y, r_point_cloud_2[j].z);
 			}
 			glEnd();
 		break;
@@ -224,20 +236,20 @@ void display()
     	case RENDER_TYPE_NORMALS:
 		{
 			glBegin(GL_LINES);
-			for(int j = 0; j <  point_cloud_1.size(); j++)
+			for(int j = 0; j <  r_point_cloud_1.size(); j++)
 			{
-				glColor3f(fabs(point_cloud_1[j].normal_x), fabs(point_cloud_1[j].normal_y), fabs(point_cloud_1[j].normal_z)  );
-				glVertex3f(point_cloud_1[j].x, point_cloud_1[j].y, point_cloud_1[j].z);
-				glVertex3f(point_cloud_1[j].x + point_cloud_1[j].normal_x, point_cloud_1[j].y + point_cloud_1[j].normal_y, point_cloud_1[j].z + point_cloud_1[j].normal_z);
+				glColor3f(fabs(r_point_cloud_1[j].normal_x), fabs(r_point_cloud_1[j].normal_y), fabs(r_point_cloud_1[j].normal_z)  );
+				glVertex3f(r_point_cloud_1[j].x, r_point_cloud_1[j].y, r_point_cloud_1[j].z);
+				glVertex3f(r_point_cloud_1[j].x + r_point_cloud_1[j].normal_x, r_point_cloud_1[j].y + r_point_cloud_1[j].normal_y, r_point_cloud_1[j].z + r_point_cloud_1[j].normal_z);
 			}
 			glEnd();
 
 			glBegin(GL_LINES);
-			for(int j = 0; j <  point_cloud_2.size(); j++)
+			for(int j = 0; j <  r_point_cloud_2.size(); j++)
 			{
-				glColor3f(fabs(point_cloud_2[j].normal_x), fabs(point_cloud_2[j].normal_y), fabs(point_cloud_2[j].normal_z)  );
-				glVertex3f(point_cloud_2[j].x, point_cloud_2[j].y, point_cloud_2[j].z);
-				glVertex3f(point_cloud_2[j].x + point_cloud_2[j].normal_x, point_cloud_2[j].y + point_cloud_2[j].normal_y, point_cloud_2[j].z + point_cloud_2[j].normal_z);
+				glColor3f(fabs(r_point_cloud_2[j].normal_x), fabs(r_point_cloud_2[j].normal_y), fabs(r_point_cloud_2[j].normal_z)  );
+				glVertex3f(r_point_cloud_2[j].x, r_point_cloud_2[j].y, r_point_cloud_2[j].z);
+				glVertex3f(r_point_cloud_2[j].x + r_point_cloud_2[j].normal_x, r_point_cloud_2[j].y + r_point_cloud_2[j].normal_y, r_point_cloud_2[j].z + r_point_cloud_2[j].normal_z);
 			}
 			glEnd();
 		break;
@@ -357,65 +369,30 @@ void keyboard(unsigned char key, int /*x*/, int /*y*/)
 			double computation_time;
 			begin_time = clock();
 
-        	cudaError_t errCUDA;
-        	Eigen::Affine3f mLS3D;
-        	double PforGround = 1.0;
-        	double PforObstacles = 1.0;
+        		register_obs1_to_obs2();
 
-        	CCUDA_AX_B_SolverWrapper::Solver_Method _solver_method;
-
-        	switch(solver_method)
-        	{
-				case 0:
-				{
-					_solver_method = CCUDA_AX_B_SolverWrapper::chol;
-					break;
-				}
-				case 1:
-				{
-					_solver_method = CCUDA_AX_B_SolverWrapper::lu;
-					break;
-				}
-				case 2:
-				{
-					_solver_method = CCUDA_AX_B_SolverWrapper::qr;
-					break;
-				}
-        	}
-           	float bounding_box_extension = 1.0f;
-
-        	if(!cudaWrapper.registerLS3D(	point_cloud_1,
-        						point_cloud_2,
-        						projections_search_radius,
-        						PforGround,
-        						PforObstacles,
-        						max_number_considered_in_INNER_bucket,
-        						max_number_considered_in_OUTER_bucket,
-        						bounding_box_extension,
-        						_solver_method,
-        						errCUDA,
-        						mLS3D))
-        	{
-        		cudaDeviceReset();
-        		std::cout << "cudaWrapper.registerLS3D NOT SUCCESFULL" << std::endl;
-        	}
-
-        	computation_time=(double)( clock () - begin_time ) /  CLOCKS_PER_SEC;
-        	std::cout << "cudaWrapper.registerLS3D computation_time: " << computation_time << std::endl;
-
-        	transformPointCloud(point_cloud_2, mLS3D);
+			computation_time=(double)( clock () - begin_time ) /  CLOCKS_PER_SEC;
+			std::cout << "cudaWrapper.registerLS3D computation_time: " << computation_time << std::endl;
 
             break;
         }
-        case 'p' :
+        case 'o' :
         {
+        	pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> r_point_cloud_1 = point_cloud_1;
+			pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> r_point_cloud_2 = point_cloud_2;
+			transformPointCloud(r_point_cloud_1, m_pose1);
+			transformPointCloud(r_point_cloud_2, m_pose2);
+
+			projections.resize(point_cloud_2.size());
+			for(size_t i = 0 ;i < projections.size(); i++)projections[i].isProjection = 0;
+
         	clock_t begin_time;
 			double computation_time;
 			begin_time = clock();
 
 			if(!cudaWrapper.compute_projections(
-						point_cloud_1,
-						point_cloud_2,
+						r_point_cloud_1,
+						r_point_cloud_2,
 						projections_search_radius,
 						bounding_box_extension,
 						max_number_considered_in_INNER_bucket,
@@ -432,10 +409,50 @@ void keyboard(unsigned char key, int /*x*/, int /*y*/)
 			render_type = RENDER_TYPE_3D_POINTS_AND_PROJECTIONS;
           	break;
         }
-        case 'f':
-        {
+        case 'p' :
+		{
+			pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> r_point_cloud_1 = point_cloud_1;
+			pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> r_point_cloud_2 = point_cloud_2;
+			transformPointCloud(r_point_cloud_1, m_pose1);
+			transformPointCloud(r_point_cloud_2, m_pose2);
 
-        	break;
+			projections.resize(point_cloud_1.size());
+			for(size_t i = 0 ;i < projections.size(); i++)projections[i].isProjection = 0;
+
+			clock_t begin_time;
+			double computation_time;
+			begin_time = clock();
+
+			if(!cudaWrapper.compute_projections(
+						r_point_cloud_2,
+						r_point_cloud_1,
+						projections_search_radius,
+						bounding_box_extension,
+						max_number_considered_in_INNER_bucket,
+						max_number_considered_in_OUTER_bucket,
+						projections))
+			{
+				cudaDeviceReset();
+				std::cout << "cudaWrapper.projections NOT SUCCESFULL" << std::endl;
+			}
+
+			computation_time=(double)( clock () - begin_time ) /  CLOCKS_PER_SEC;
+			std::cout << "cudaWrapper.projections computation_time: " << computation_time << std::endl;
+
+			render_type = RENDER_TYPE_3D_POINTS_AND_PROJECTIONS;
+			break;
+		}
+        case 't':
+        {
+        	clock_t begin_time;
+			double computation_time;
+			begin_time = clock();
+
+				register_obs2_to_obs1();
+
+			computation_time=(double)( clock () - begin_time ) /  CLOCKS_PER_SEC;
+			std::cout << "cudaWrapper.registerLS3D computation_time: " << computation_time << std::endl;
+           	break;
         }
         case '+':
         {
@@ -531,8 +548,6 @@ bool loadData(std::string filename, std::string scan_name_1, std::string scan_na
 	std::string inputXMLFn = filename;
 	data_model inputXML;
 	std::vector<std::string> indices;
-	Eigen::Affine3f m_position1;
-	Eigen::Affine3f m_position2;
 
 	if(!inputXML.loadFile(inputXMLFn))
 	{
@@ -542,7 +557,7 @@ bool loadData(std::string filename, std::string scan_name_1, std::string scan_na
 
 	inputXML.getAllScansId(indices);
 
-	if(!inputXML.getAffine(scan_name_1, m_position1.matrix()))
+	if(!inputXML.getAffine(scan_name_1, m_pose1.matrix()))
 	{
 		std::cout << "Available scans:" << std::endl;
 		for(int i = 0; i < indices.size(); i++)
@@ -552,7 +567,7 @@ bool loadData(std::string filename, std::string scan_name_1, std::string scan_na
 		return false;
 	}
 
-	if(!inputXML.getAffine(scan_name_2, m_position2.matrix()))
+	if(!inputXML.getAffine(scan_name_2, m_pose2.matrix()))
 	{
 		std::cout << "Available scans:" << std::endl;
 		for(int i = 0; i < indices.size(); i++)
@@ -569,15 +584,156 @@ bool loadData(std::string filename, std::string scan_name_1, std::string scan_na
 
 	if(pcl::io::loadPCDFile(fn, _point_cloud_1) == -1)
 			return false;
-	transformPointCloud(_point_cloud_1, m_position1);
 
 	fn = inputXML.getFullPathOfPointcloud(scan_name_2);
 	inputXML.getPointcloudName(scan_name_2, pcdFileNameOnly);
 
 	if(pcl::io::loadPCDFile(fn, _point_cloud_2) == -1)
 				return false;
-	transformPointCloud(_point_cloud_2, m_position2);
 
 	return true;
 }
 
+void register_obs1_to_obs2()
+{
+	Eigen::Vector3f omfika1, omfika2;
+	Eigen::Vector3f xyz1, xyz2;
+	Eigen::Affine3f pose1;
+	Eigen::Affine3f pose2;
+	cudaWrapper.Matrix4ToEuler(m_pose1, omfika1, xyz1);
+	cudaWrapper.Matrix4ToEuler(m_pose2, omfika2, xyz2);
+	cudaWrapper.EulerToMatrix(omfika1, xyz1, pose1);
+	cudaWrapper.EulerToMatrix(omfika2, xyz2, pose2);
+
+	pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> _point_cloud_1 = point_cloud_1;
+	pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> _point_cloud_2 = point_cloud_2;
+
+	observations_LS3D_t obs;
+	obs.om = omfika1.x();
+	obs.fi = omfika1.y();
+	obs.ka = omfika1.z();
+	obs.tx = xyz1.x();
+	obs.ty = xyz1.y();
+	obs.tz = xyz1.z();
+
+	obs.m_pose = pose1;
+	transformPointCloud(_point_cloud_1, pose1);
+	transformPointCloud(_point_cloud_2, pose2);
+	obs.projections.resize(_point_cloud_1.size());
+
+	if(!cudaWrapper.compute_projections(
+			_point_cloud_2,
+			_point_cloud_1,
+			projections_search_radius,
+			bounding_box_extension,
+			max_number_considered_in_INNER_bucket,
+			max_number_considered_in_OUTER_bucket,
+			obs.projections))
+	{
+		std::cout << "PROBLEM: cudaWrapper.compute_projection" << std::endl;
+		return;
+	}
+
+	int number_of_projections = 0;
+	for(size_t i = 0 ; i < obs.projections.size(); i++)
+	{
+		obs.projections[i].x0 = point_cloud_1[i].x;
+		obs.projections[i].y0 = point_cloud_1[i].y;
+		obs.projections[i].z0 = point_cloud_1[i].z;
+
+		if(obs.projections[i].isProjection == 1)
+		{
+			number_of_projections++;
+		}
+	}
+
+	std::cout << "number of projections: " << number_of_projections << std::endl;
+
+	if(number_of_projections < 10)
+	{
+		std::cout << "number_of_projections < 10  return" << std::endl;
+		return;
+	}
+
+	if(!cudaWrapper.registerLS3D(obs))
+	{
+		std::cout << "PROBLEM: cudaWrapper.registerLS3D(obs1to2)" << std::endl;
+		return;
+	}
+
+	Eigen::Vector3f omfika1_res(obs.om, obs.fi, obs.ka);
+	Eigen::Vector3f xyz1_res(obs.tx, obs.ty, obs.tz);
+	cudaWrapper.EulerToMatrix(omfika1_res, xyz1_res, m_pose1);
+}
+
+void register_obs2_to_obs1()
+{
+	Eigen::Vector3f omfika1, omfika2;
+	Eigen::Vector3f xyz1, xyz2;
+	Eigen::Affine3f pose1;
+	Eigen::Affine3f pose2;
+	cudaWrapper.Matrix4ToEuler(m_pose1, omfika1, xyz1);
+	cudaWrapper.Matrix4ToEuler(m_pose2, omfika2, xyz2);
+	cudaWrapper.EulerToMatrix(omfika1, xyz1, pose1);
+	cudaWrapper.EulerToMatrix(omfika2, xyz2, pose2);
+
+	pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> _point_cloud_1 = point_cloud_1;
+	pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> _point_cloud_2 = point_cloud_2;
+
+	observations_LS3D_t obs;
+	obs.om = omfika2.x();
+	obs.fi = omfika2.y();
+	obs.ka = omfika2.z();
+	obs.tx = xyz2.x();
+	obs.ty = xyz2.y();
+	obs.tz = xyz2.z();
+
+	obs.m_pose = pose1;
+	transformPointCloud(_point_cloud_1, pose1);
+	transformPointCloud(_point_cloud_2, pose2);
+	obs.projections.resize(_point_cloud_2.size());
+
+	if(!cudaWrapper.compute_projections(
+			_point_cloud_1,
+			_point_cloud_2,
+			projections_search_radius,
+			bounding_box_extension,
+			max_number_considered_in_INNER_bucket,
+			max_number_considered_in_OUTER_bucket,
+			obs.projections))
+	{
+		std::cout << "PROBLEM: cudaWrapper.compute_projection" << std::endl;
+		return;
+	}
+
+	int number_of_projections = 0;
+	for(size_t i = 0 ; i < obs.projections.size(); i++)
+	{
+		obs.projections[i].x0 = point_cloud_2[i].x;
+		obs.projections[i].y0 = point_cloud_2[i].y;
+		obs.projections[i].z0 = point_cloud_2[i].z;
+
+		if(obs.projections[i].isProjection == 1)
+		{
+			number_of_projections++;
+		}
+	}
+
+	std::cout << "number of projections: " << number_of_projections << std::endl;
+
+	if(number_of_projections < 10)
+	{
+		std::cout << "number_of_projections < 10  return" << std::endl;
+		return;
+	}
+
+	if(!cudaWrapper.registerLS3D(obs))
+	{
+		std::cout << "PROBLEM: cudaWrapper.registerLS3D(obs2to1)" << std::endl;
+		return;
+	}
+
+	Eigen::Vector3f omfika2_res(obs.om, obs.fi, obs.ka);
+	Eigen::Vector3f xyz2_res(obs.tx, obs.ty, obs.tz);
+	cudaWrapper.EulerToMatrix(omfika2_res, xyz2_res, m_pose2);
+}

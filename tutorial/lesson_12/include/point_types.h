@@ -25,6 +25,9 @@ namespace lidar_pointcloud
 		float x_dst;
 		float y_dst;
 		float z_dst;
+		float x0;
+		float y0;
+		float z0;
 		float normal_x;
 		float normal_y;
 		float normal_z;
@@ -56,6 +59,8 @@ POINT_CLOUD_REGISTER_POINT_STRUCT(lidar_pointcloud::PointProjection,
 								(float, normal_z, normal_z)
 								(float, distance, distance)
 								(uint8_t, isProjection, isProjection))
+
+
 
 #endif
 
