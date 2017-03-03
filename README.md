@@ -35,7 +35,7 @@ Content of the tutorial:
 
 ### Lesson 14: ToDo
 
-### Lesson 15: multi scan registration (LS3D Least Square Surface Matching)
+### Lesson 15: multi scan registration (LS3D Least Square Surface Matching, Ax=B solver on GPU)
 ...
 
 ### Lesson 19: laser range finder simulation
