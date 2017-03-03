@@ -1,5 +1,5 @@
-#ifndef __LESSON_0_H__
-#define __LESSON_0_H__
+#ifndef __LESSON_13_H__
+#define __LESSON_13_H__
 
 #include <cuda.h>
 #include <cuda_runtime.h>
