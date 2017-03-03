@@ -128,7 +128,7 @@ void CCudaWrapper::fill_delta_PlanarFeatureMatching(double *delta, double om, do
 	mT = Eigen::Translation3f(tx, ty, tz);
 	Eigen::Affine3f m = mT * mR;
 
-	for(int i=0;i<planes1.size(); i++)
+	/*for(int i=0;i<planes1.size(); i++)
 	{
 		plane tplate = transformPlane(planes2[i], m);
 
@@ -140,10 +140,9 @@ void CCudaWrapper::fill_delta_PlanarFeatureMatching(double *delta, double om, do
 		delta[4 * i + 1] = delta2;
 		delta[4 * i + 2] = delta3;
 		delta[4 * i + 3] = delta4;
-	}
+	}*/
 
 
-	/* approximated method
 	double r[9];
 	computeR(om, fi, ka, r);
 
@@ -169,7 +168,7 @@ void CCudaWrapper::fill_delta_PlanarFeatureMatching(double *delta, double om, do
 		delta[4 * i + 1] = delta2;
 		delta[4 * i + 2] = delta3;
 		delta[4 * i + 3] = delta4;
-	}*/
+	}
 
 }
 
@@ -495,16 +494,38 @@ bool CCudaWrapper::computeSingleIterationOfPlanarFeatureMatchingMultiplePoseCUDA
 
 		for(int i=0;i < v_pair_local_observations[k].planes_to_register.size(); i++)
 		{
-			plane tplate = transformPlane(v_pair_local_observations[k].planes_to_register[i], m);
-			double delta1 = v_pair_local_observations[k].planes_reference[i].nx - tplate.nx;
-			double delta2 = v_pair_local_observations[k].planes_reference[i].ny - tplate.ny;
-			double delta3 = v_pair_local_observations[k].planes_reference[i].nz - tplate.nz;
-			double delta4 = -(v_pair_local_observations[k].planes_reference[i].rho - tplate.rho);
+			plane tplate = v_pair_local_observations[k].planes_to_register[i];
+			double nx2 = tplate.nx;
+			double ny2 = tplate.ny;
+			double nz2 = tplate.nz;
+			double q2 = tplate.rho;
 
+			double nx1 = v_pair_local_observations[k].planes_reference[i].nx;
+			double ny1 = v_pair_local_observations[k].planes_reference[i].ny;
+			double nz1 = v_pair_local_observations[k].planes_reference[i].nz;
+			double q1  = v_pair_local_observations[k].planes_reference[i].rho;
+
+			double delta1 = nx1 - (mR(0,0)*nx2 + mR(0,1)*ny2 + mR(0,2)*nz2);
+			double delta2 = ny1 - (mR(1,0)*nx2 + mR(1,1)*ny2 + mR(1,2)*nz2);
+			double delta3 = nz1 - (mR(2,0)*nx2 + mR(2,1)*ny2 + mR(2,2)*nz2);
+			double delta4 = q2 - q1 + (mR(0,0)*nx2 + mR(0,1)*ny2 + mR(0,2)*nz2) * tx +
+									  (mR(1,0)*nx2 + mR(1,1)*ny2 + mR(1,2)*nz2) * ty +
+									  (mR(2,0)*nx2 + mR(2,1)*ny2 + mR(2,2)*nz2) * tz;
 			delta[4 * i + 0 + offset *4] = delta1;
 			delta[4 * i + 1 + offset *4] = delta2;
 			delta[4 * i + 2 + offset *4] = delta3;
 			delta[4 * i + 3 + offset *4] = delta4;
+
+			//plane tplate = transformPlane(v_pair_local_observations[k].planes_to_register[i], m);
+			//double delta1 = v_pair_local_observations[k].planes_reference[i].nx - tplate.nx;
+			//double delta2 = v_pair_local_observations[k].planes_reference[i].ny - tplate.ny;
+			//double delta3 = v_pair_local_observations[k].planes_reference[i].nz - tplate.nz;
+			//double delta4 = -(v_pair_local_observations[k].planes_reference[i].rho - tplate.rho);
+
+			//delta[4 * i + 0 + offset *4] = delta1;
+			//delta[4 * i + 1 + offset *4] = delta2;
+			//delta[4 * i + 2 + offset *4] = delta3;
+			//delta[4 * i + 3 + offset *4] = delta4;
 		}
 	}
 
