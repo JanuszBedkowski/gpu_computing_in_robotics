@@ -118,5 +118,5 @@ Particle filter localization DEMO - 500 particles estimating current position.
 ![particle_filter_3](images/particle_filter_3.png)
 
 
-
+### Robotic arm collision detection
 
