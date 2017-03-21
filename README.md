@@ -33,7 +33,7 @@ Content of the tutorial:
 
 ### Lesson 13: data registration Plane To Plane (Ax=B solver on GPU)
 
-### Lesson 14: ToDo
+### Lesson 14: multi scan registration (point to point, Ax=B solver on GPU)
 
 ### Lesson 15: multi scan registration (LS3D Least Square Surface Matching, Ax=B solver on GPU)
 ...
