@@ -259,6 +259,7 @@ void display()
 
     glEnable(GL_LIGHTING);
 
+    printHelp();
     glutSwapBuffers();
 }
 
