@@ -57,6 +57,7 @@ std::vector<pcl::PointCloud<lidar_pointcloud::PointXYZIRNL> > r_vpointcloud;
 
 pcl::PointCloud<pcl::PointXYZ> pc_nn_1;
 pcl::PointCloud<pcl::PointXYZ> pc_nn_2;
+std::vector<char> nn_semantic_label;
 
 float search_radius = 2.0f;
 int max_number_considered_in_INNER_bucket = 100;
@@ -66,11 +67,29 @@ unsigned int index_begin = 0;
 unsigned int index_end = 0;
 unsigned int index_step = 1;
 
+float colors[16][3] =
+		{1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		0.4f, 0.1f, 0.7f,
+		0.6f, 0.1f, 0.8f,
+		0.8f, 0.4f, 0.9f,
+		0.1f, 0.6f, 0.1f,
+		0.3f, 0.1f, 0.2f,
+		0.4f, 0.5f, 0.9f,
+		0.4f, 0.5f, 0.1f,
+		0.4f, 0.1f, 0.9f,
+		0.4f, 0.6f, 0.9f,
+		0.1f, 0.5f, 0.9f,
+		0.4f, 0.1f, 0.1f,
+		0.4f, 0.2f, 0.4f};
+
 void printHelp()
 {
 	std::cout << "----------------------" << std::endl;
-	std::cout << "1: render only 3D points" << std::endl;
-	std::cout << "2: render 3D points and nearest neighbours" << std::endl;
+	std::cout << "1: render only 3D points with semantic labels as colours" << std::endl;
+	std::cout << "2: render 3D points and semantic nearest neighbours" << std::endl;
 	std::cout << "+: increase point size" << std::endl;
 	std::cout << "-: decrease point size" << std::endl;
 	std::cout << "r: register" << std::endl;
@@ -180,7 +199,7 @@ bool initGL(int *argc, char **argv)
     glutInit(argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
     glutInitWindowSize(window_width, window_height);
-    glutCreateWindow("Lesson 14 - multi scan registration (point to point)");
+    glutCreateWindow("Lesson 16 - multi scan registration (semantic point to point)");
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutMotionFunc(motion);
@@ -230,12 +249,20 @@ void display()
 	{
     	case RENDER_TYPE_ONLY_3D_POINTS:
 		{
-			glColor3f(1.0f, 0.0f, 0.0f);
+
 			glBegin(GL_POINTS);
 			for(size_t i = 0; i < r_vpointcloud.size(); i++)
 			{
 				for(size_t j = 0; j < r_vpointcloud[i].points.size(); j++)
 				{
+					if(r_vpointcloud[i].points[j].label<16 && r_vpointcloud[i].points[j].label>=0)
+					{
+						glColor3f(colors[r_vpointcloud[i].points[j].label][0], colors[r_vpointcloud[i].points[j].label][1], colors[r_vpointcloud[i].points[j].label][2]);
+					}else
+					{
+						glColor3f(0.7f, 0.7f, 0.7f);
+					}
+
 					glVertex3f(r_vpointcloud[i].points[j].x, r_vpointcloud[i].points[j].y, r_vpointcloud[i].points[j].z);
 				}
 			}
@@ -246,8 +273,8 @@ void display()
 
     	case RENDER_TYPE_3D_POINTS_AND_NN:
     	{
-       		glColor3f(1.0f, 0.0f, 0.0f);
-			glBegin(GL_POINTS);
+    		glBegin(GL_POINTS);
+    		glColor3f(0.3f, 0.3f, 0.3f);
 			for(size_t i = 0; i < r_vpointcloud.size(); i++)
 			{
 				for(size_t j = 0; j < r_vpointcloud[i].points.size(); j++)
@@ -257,10 +284,17 @@ void display()
 			}
 			glEnd();
 
-			glColor3f(0.0f, 1.0f, 0.0f);
 			glBegin(GL_LINES);
 			for(size_t i = 0; i < pc_nn_1.size(); i++)
 			{
+				if(nn_semantic_label[i]<16 && nn_semantic_label[i]>=0)
+				{
+					glColor3f(colors[nn_semantic_label[i]][0], colors[nn_semantic_label[i]][1], colors[nn_semantic_label[i]][2]);
+				}else
+				{
+					glColor3f(0.7f, 0.7f, 0.7f);
+				}
+
 				glVertex3f(pc_nn_1[i].x, pc_nn_1[i].y, pc_nn_1[i].z);
 				glVertex3f(pc_nn_2[i].x, pc_nn_2[i].y, pc_nn_2[i].z);
 			}
@@ -404,6 +438,7 @@ void registerAllScans()
 {
 	pc_nn_1.clear();
 	pc_nn_2.clear();
+	nn_semantic_label.clear();
 
 	std::vector<Eigen::Affine3f> v_poses;
 
@@ -444,18 +479,19 @@ void registerAllScans()
 				nearest_neighbour_indexes.resize(_point_cloud_2.size());
 				std::fill(nearest_neighbour_indexes.begin(), nearest_neighbour_indexes.end(), -1);
 
-				if(!cudaWrapper.nearestNeighbourhoodSearch(
-									_point_cloud_1,
-									_point_cloud_2,
-				        			search_radius,
-				        			bounding_box_extension,
-				        			max_number_considered_in_INNER_bucket,
-				        			max_number_considered_in_OUTER_bucket,
-				        			nearest_neighbour_indexes))
+				if(!cudaWrapper.semanticNearestNeighbourhoodSearch(
+						_point_cloud_1,
+						_point_cloud_2,
+						search_radius,
+						bounding_box_extension,
+						max_number_considered_in_INNER_bucket,
+						max_number_considered_in_OUTER_bucket,
+						nearest_neighbour_indexes))
 				{
 					cudaDeviceReset();
-					std::cout << "cudaWrapper.nearestNeighbourhoodSearch NOT SUCCESFULL" << std::endl;
+					std::cout << "cudaWrapper.semanticNearestNeighbourhoodSearch NOT SUCCESFULL" << std::endl;
 				}
+
 
 				for(size_t ii = 0 ; ii < nearest_neighbour_indexes.size(); ii++)
 				{
@@ -466,6 +502,7 @@ void registerAllScans()
 
 						pc_nn_1.push_back(p1);
 						pc_nn_2.push_back(p2);
+						nn_semantic_label.push_back(_point_cloud_2[ii].label);
 
 						obs_nn_t obs_nn;
 						obs_nn.x0 = vpointcloud[i].points[nearest_neighbour_indexes[ii]].x;
