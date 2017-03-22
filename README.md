@@ -36,6 +36,8 @@ Content of the tutorial:
 ### Lesson 14: multi scan registration Point To Point (Ax=B solver on GPU)
 
 ### Lesson 15: multi scan registration (LS3D Least Square Surface Matching, Ax=B solver on GPU)
+
+### Lesson 16: multi scan registration semantic Point To Point (Ax=B solver on GPU)
 ...
 
 ### Lesson 19: laser range finder simulation
