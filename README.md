@@ -1,6 +1,6 @@
 # GPU Computing in Robotics
 
-This tutorial concenrs 3D lidar data processing with CUDA
+This tutorial concerns robotic data processing with CUDA. 
 Content of the tutorial:
 
 ## Lessons
