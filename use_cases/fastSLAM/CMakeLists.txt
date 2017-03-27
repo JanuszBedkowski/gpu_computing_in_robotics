@@ -9,6 +9,8 @@ find_package(PCL 1.5 REQUIRED)
 find_package(CUDA 7.5 REQUIRED)
 find_package(CUDADevice 3.0 REQUIRED)
 
+set_directory_properties( PROPERTIES COMPILE_DEFINITIONS "" )
+
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} ${CUDADEVICE_NVCC_FLAGS} -Xptxas -v")
 
 include_directories( include )	
