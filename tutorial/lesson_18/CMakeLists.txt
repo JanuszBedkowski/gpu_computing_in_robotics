@@ -10,6 +10,8 @@ find_package(CUDA 7.5 REQUIRED)
 find_package(CUDADevice 3.0 REQUIRED)
 find_package(OpenCV REQUIRED)
 
+set_directory_properties( PROPERTIES COMPILE_DEFINITIONS "" )
+
 include_directories(include)
 include_directories(${PCL_INCLUDE_DIRS})
 add_definitions(${PCL_DEFINITIONS})

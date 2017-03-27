@@ -14,6 +14,8 @@ message("cuda libraries: ${CUDA_LIBRARIES}")
 message("cuda cublas libraries: ${CUDA_CUBLAS_LIBRARIES}") 
 message("cuda cusolver libraries: ${CUDA_cusolver_LIBRARY}")
 
+set_directory_properties( PROPERTIES COMPILE_DEFINITIONS "" )
+
 include_directories(include)
 include_directories(${PCL_INCLUDE_DIRS})
 add_definitions(${PCL_DEFINITIONS})

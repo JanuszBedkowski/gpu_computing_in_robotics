@@ -3,8 +3,10 @@
 
 #include <cuda.h>
 #include <cuda_runtime.h>
-#include <Eigen/Geometry>
+//#include <Eigen/Geometry>
 #include <vector>
+#include <pcl/point_cloud.h>
+
 
 typedef struct plane
 {

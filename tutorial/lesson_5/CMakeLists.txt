@@ -9,6 +9,8 @@ find_package(PCL 1.5 REQUIRED)
 find_package(CUDA 7.5 REQUIRED)
 find_package(CUDADevice 3.0 REQUIRED)
 
+set_directory_properties( PROPERTIES COMPILE_DEFINITIONS "" )
+
 include_directories(include)
 include_directories(${PCL_INCLUDE_DIRS})
 add_definitions(${PCL_DEFINITIONS})

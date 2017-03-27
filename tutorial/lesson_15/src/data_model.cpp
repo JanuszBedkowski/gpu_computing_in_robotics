@@ -29,10 +29,15 @@
     {
 		//caused problems on VS2010, BOOST 1.55
         //boost::property_tree::write_xml(fn, pt_, std::locale(), boost::property_tree::xml_writer_make_settings<char>(' ', 1u));
-		boost::property_tree::write_xml(fn, pt_, std::locale(), boost::property_tree::xml_writer_make_settings(' ', 1u));
 
-		xmlPath = boost::filesystem::path(fn);
-		return true;
+		//caused problems on ubuntu 16.04
+		//boost::property_tree::write_xml(fn, pt_, std::locale(), boost::property_tree::xml_writer_make_settings(' ', 1u));
+
+		//xmlPath = boost::filesystem::path(fn);
+		//return true;
+
+		std::cout << "data_model::saveFile: TODO" << std::endl;
+		return false;
 	}
 	
 	bool data_model::getAffine (std::string scanId, Eigen::Matrix4f &matrix)

@@ -1,18 +1,28 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../../cmake")
 
-project(GPU_Computing_in_Robotics_tutorial_lesson_13)
+project(gpu_computing_in_robotics_lesson_13)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
+find_package(PCL 1.5 REQUIRED)
 find_package(CUDA 7.5 REQUIRED)
 find_package(CUDADevice 3.0 REQUIRED)
 
-find_package( PkgConfig )
-pkg_check_modules( EIGEN3 REQUIRED eigen3 )
-include_directories( ${EIGEN3_INCLUDE_DIRS} )
+message("cuda include dir: ${CUDA_INCLUDE_DIRS}") 
+message("cuda libraries: ${CUDA_LIBRARIES}") 
+message("cuda cublas libraries: ${CUDA_CUBLAS_LIBRARIES}") 
+message("cuda cusolver libraries: ${CUDA_cusolver_LIBRARY}")
+
+set_directory_properties( PROPERTIES COMPILE_DEFINITIONS "" )
+
+#find_package( PkgConfig )
+#pkg_check_modules( EIGEN3 REQUIRED eigen3 )
+#include_directories( ${EIGEN3_INCLUDE_DIRS} )
 
 include_directories(include)
+include_directories(${PCL_INCLUDE_DIRS})
+add_definitions(${PCL_DEFINITIONS})
 
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} ${CUDADEVICE_NVCC_FLAGS} -Xptxas -v")
 
@@ -25,6 +35,7 @@ cuda_add_executable(lesson_13
 target_link_libraries(lesson_13
 	${OPENGL_LIBRARIES}
 	${GLUT_LIBRARIES}
+	${PCL_LIBRARIES}
 	${CUDA_cusparse_LIBRARY}
 	${CUDA_cusolver_LIBRARY}
 	${CUDA_cublas_LIBRARY}
@@ -39,6 +50,7 @@ cuda_add_executable(lesson_13_multiple_pose
 target_link_libraries(lesson_13_multiple_pose
 	${OPENGL_LIBRARIES}
 	${GLUT_LIBRARIES}
+	${PCL_LIBRARIES}
 	${CUDA_cusparse_LIBRARY}
 	${CUDA_cusolver_LIBRARY}
 	${CUDA_cublas_LIBRARY}

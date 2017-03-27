@@ -9,6 +9,8 @@ find_package(PCL 1.5 REQUIRED)
 find_package(CUDA 7.5 REQUIRED)
 find_package(CUDADevice 3.0 REQUIRED)
 
+set_directory_properties( PROPERTIES COMPILE_DEFINITIONS "" )
+
 message("cuda include dir: ${CUDA_INCLUDE_DIRS}") 
 message("cuda libraries: ${CUDA_LIBRARIES}") 
 message("cuda cublas libraries: ${CUDA_CUBLAS_LIBRARIES}") 
