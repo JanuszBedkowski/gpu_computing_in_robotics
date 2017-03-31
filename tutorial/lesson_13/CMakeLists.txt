@@ -16,15 +16,13 @@ message("cuda cusolver libraries: ${CUDA_cusolver_LIBRARY}")
 
 set_directory_properties( PROPERTIES COMPILE_DEFINITIONS "" )
 
-#find_package( PkgConfig )
-#pkg_check_modules( EIGEN3 REQUIRED eigen3 )
-#include_directories( ${EIGEN3_INCLUDE_DIRS} )
-
 include_directories(include)
 include_directories(${PCL_INCLUDE_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} ${CUDADEVICE_NVCC_FLAGS} -Xptxas -v")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
+
 
 cuda_add_executable(lesson_13
 	src/lesson_13_main.cpp
