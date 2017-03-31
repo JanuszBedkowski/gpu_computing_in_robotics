@@ -47,10 +47,8 @@ Content of the tutorial:
 
 # Requirements
 
-Software was developed and tested on LINUX UBUNTU 14.04 with following libraries
+Software was developed and tested on LINUX UBUNTU 14.04, 16.04 with following libraries
 OpenGL, GLUT, PCL 1.5, CUDA>=7.5
-
-remark: there is a problem with NVCC on UBUNTU 16.04, CUDA 8.0 (work in progress)
 
 # Build
 Each lesson is an independent software package, thus the following steps should be performed:
