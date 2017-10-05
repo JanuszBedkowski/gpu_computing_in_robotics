@@ -7,7 +7,7 @@ Content of the tutorial:
 
 ### Lesson 0: basic transformations
 
-![Lesson 0 - basic transformations](images/tutorial/lesson_0.png)
+![Lesson 0 - basic transformations](images/tutorial/lesson_0.gif)
 
 ### Lesson 1: down-sampling
 
