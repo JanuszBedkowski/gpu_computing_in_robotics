@@ -39,6 +39,8 @@ Content of the tutorial:
 
 ### Lesson 8: semantic nearest neighborhood search
 
+![Lesson 8 - semantic nearest neighborhood search](images/tutorial/lesson_8.gif)
+
 ### Lesson 9: data registration Iterative Closest Point
 
 ### Lesson 10: data registration semantic Iterative Closest Point
