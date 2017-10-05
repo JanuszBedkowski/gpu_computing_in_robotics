@@ -140,3 +140,5 @@ Run ./particle_filter_localization_fast ../dataset/metascan_pointXYZL.pcd ../dat
 
 
 ### Robotic arm collision detection
+
+![Robotic arm collision detection](images/use_cases/robot.gif)
