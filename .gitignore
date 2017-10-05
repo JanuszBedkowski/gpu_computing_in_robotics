@@ -29,8 +29,10 @@
 *.app
 
 BUILD
+build
 *~
 
 #eclipse project
 .cproject
 .project
+
