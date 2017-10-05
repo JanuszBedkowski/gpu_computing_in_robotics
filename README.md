@@ -11,6 +11,8 @@ Content of the tutorial:
 
 ### Lesson 1: down-sampling
 
+![Lesson 1 - down-sampling](images/tutorial/lesson_1.gif)
+
 ### Lesson 2: noise removal (naive)
 
 ### Lesson 3: nearest neighborhood search
