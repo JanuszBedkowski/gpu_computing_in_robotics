@@ -55,6 +55,8 @@ Content of the tutorial:
 
 ### Lesson 12: data registration Least Square Surface Matching (Ax=B solver on GPU)
 
+![Lesson 12 - data registration Least Square Surface Matching (Ax=B solver on GPU)](images/tutorial/lesson_12.gif)
+
 ### Lesson 13: data registration Plane To Plane (Ax=B solver on GPU)
 
 ### Lesson 14: multi scan registration Point To Point (Ax=B solver on GPU)
