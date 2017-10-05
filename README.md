@@ -1,6 +1,6 @@
 # GPU Computing in Robotics
 
-This tutorial concerns robotic data processing with CUDA. 
+This tutorial concerns robotic data processing with CUDA.
 Content of the tutorial:
 
 ## Lessons
@@ -70,6 +70,8 @@ Content of the tutorial:
 ![Lesson 15 - multi scan registration (LS3D Least Square Surface Matching, Ax=B solver on GPU)](images/tutorial/lesson_15.gif)
 
 ### Lesson 16: multi scan registration semantic Point To Point (Ax=B solver on GPU)
+
+![Lesson 16 - multi scan registration semantic Point To Point (Ax=B solver on GPU)](images/tutorial/lesson_16.gif)
 
 ### Lesson 17: path planning (via diffusion process)
 
@@ -154,4 +156,3 @@ Particle filter localization DEMO - 500 particles estimating current position.
 
 
 ### Robotic arm collision detection
-
