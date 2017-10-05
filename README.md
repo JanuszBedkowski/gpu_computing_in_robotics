@@ -27,9 +27,11 @@ Content of the tutorial:
 
 ### Lesson 5: normal vector computation
 
-![Lesson 5 - normal vector computation](images/tutorial/lesson_4.gif)
+![Lesson 5 - normal vector computation](images/tutorial/lesson_5.gif)
 
 ### Lesson 6: projections
+
+![Lesson 6 - projections](images/tutorial/lesson_6.gif)
 
 ### Lesson 7: basic semantics
 
