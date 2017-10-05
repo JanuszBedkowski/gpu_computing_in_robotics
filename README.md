@@ -43,6 +43,8 @@ Content of the tutorial:
 
 ### Lesson 9: data registration Iterative Closest Point
 
+![Lesson 9 - data registration Iterative Closest Point](images/tutorial/lesson_9.gif)
+
 ### Lesson 10: data registration semantic Iterative Closest Point
 
 ### Lesson 11: data registration point to projection Iterative Closest Point
