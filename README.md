@@ -100,9 +100,15 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 ./lesson_X
 ```
+
+----------------------
+
 ## Use Cases
 
 ### fastSLAM
+
+![fastSLAM](images/use_cases/fastSLAM.gif)
+
 This DEMO shows the parallel computing for fastSLAM. Each particle containes 3D map built based on registered Velodyne VLP16 3D semantic data. The result is corrected trajectory.
 
 #### Execute
@@ -115,21 +121,6 @@ to run example
 ./fastSLAM ../dataset/model_reduced_pointXYZIRNL.xml
 ```
 (check help in console, e.g. type c to start computations, software was tested on GF1050Ti, thus for this example the single scan calculation takes up to 40ms)
-
-**Results**
-
-Here are results achieved using example above.
-
-![fastSLAM](images/fastSLAM.jpg)
-
-Input semantic data
-![fastSLAM-semanticData](images/fastSLAM-semanticData.png)
-
-All trajectories (particles)
-![fastSLAM-allTrajectories](images/fastSLAM-allTrajectories.png)
-
-Best trajectory
-![fastSLAM-bestTrajectory](images/fastSLAM-bestTrajectory.png)
 
 ### particle filter localization
 This DEMO shows the use of GPU for robust robot localization based on 3D semantic data.
