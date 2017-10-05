@@ -85,6 +85,7 @@ bool initGL(int *argc, char **argv);
 void display();
 void keyboard(unsigned char key, int x, int y);
 void mouse(int button, int state, int x, int y);
+void reshape(int width, int height);
 void motion(int x, int y);
 void printHelp();
 void singleIteration();
@@ -271,6 +272,7 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
+    glutReshapeFunc(reshape);
 	glutIdleFunc(singleIteration);
 	glutMainLoop();
 }
@@ -284,6 +286,7 @@ bool initGL(int *argc, char **argv)
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutMotionFunc(motion);
+    glutReshapeFunc(reshape);
 
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glDisable(GL_DEPTH_TEST);
@@ -297,9 +300,17 @@ bool initGL(int *argc, char **argv)
     return true;
 }
 
+void reshape(int width, int height) {
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60.0, (GLfloat)width / (GLfloat) height, 0.01, 10000.0);
+}
+
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

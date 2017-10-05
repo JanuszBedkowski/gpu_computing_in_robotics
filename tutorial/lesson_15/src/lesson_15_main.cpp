@@ -34,6 +34,7 @@ bool initGL(int *argc, char **argv);
 void display();
 void keyboard(unsigned char key, int x, int y);
 void mouse(int button, int state, int x, int y);
+void reshape(int width, int height);
 void motion(int x, int y);
 
 
@@ -166,6 +167,7 @@ main(int argc, char **argv)
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
+    glutReshapeFunc(reshape);
 	glutMainLoop();
 }
 
@@ -178,6 +180,7 @@ bool initGL(int *argc, char **argv)
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutMotionFunc(motion);
+    glutReshapeFunc(reshape);
 
     // default initialization
     glClearColor(0.0, 0.0, 0.0, 1.0);

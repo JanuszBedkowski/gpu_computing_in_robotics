@@ -16,6 +16,7 @@ bool initGL(int *argc, char **argv);
 void display();
 void keyboard(unsigned char key, int x, int y);
 void mouse(int button, int state, int x, int y);
+void reshape(int width, int height);
 void motion(int x, int y);
 void printHelp();
 
@@ -41,6 +42,7 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
+    glutReshapeFunc(reshape);
 	glutMainLoop();
 }
 
@@ -53,6 +55,7 @@ bool initGL(int *argc, char **argv)
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutMotionFunc(motion);
+    glutReshapeFunc(reshape);
 
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glDisable(GL_DEPTH_TEST);
