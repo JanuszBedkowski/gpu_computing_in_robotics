@@ -19,6 +19,8 @@ Content of the tutorial:
 
 ### Lesson 3: nearest neighborhood search
 
+![Lesson 3 - nearest neighborhood search](images/tutorial/lesson_3.gif)
+
 ### Lesson 4: noise removal
 
 ### Lesson 5: normal vector computation
