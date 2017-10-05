@@ -47,6 +47,8 @@ Content of the tutorial:
 
 ### Lesson 10: data registration semantic Iterative Closest Point
 
+![Lesson 10 - data registration semantic Iterative Closest Point](images/tutorial/lesson_10.gif)
+
 ### Lesson 11: data registration point to projection Iterative Closest Point
 
 ### Lesson 12: data registration Least Square Surface Matching (Ax=B solver on GPU)
