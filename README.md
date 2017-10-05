@@ -15,6 +15,8 @@ Content of the tutorial:
 
 ### Lesson 2: noise removal (naive)
 
+![Lesson 2 - noise removal (naive)](images/tutorial/lesson_2.gif)
+
 ### Lesson 3: nearest neighborhood search
 
 ### Lesson 4: noise removal
