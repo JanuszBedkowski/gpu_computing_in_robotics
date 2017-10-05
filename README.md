@@ -83,6 +83,8 @@ Content of the tutorial:
 
 ### Lesson 19: laser range finder simulation
 
+![Lesson 19 - laser range finder simulation](images/tutorial/lesson_19.gif)
+
 # Requirements
 
 Software was developed and tested on LINUX UBUNTU 14.04, 16.04 with following libraries
