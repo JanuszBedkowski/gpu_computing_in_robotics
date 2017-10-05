@@ -79,6 +79,8 @@ Content of the tutorial:
 
 ### Lesson 18: image matching (BFROST: Binary Features from Robust Orientation Segment Tests)
 
+![Lesson 18 - image matching (BFROST: Binary Features from Robust Orientation Segment Tests)](images/tutorial/lesson_18.gif)
+
 ### Lesson 19: laser range finder simulation
 
 # Requirements
