@@ -35,6 +35,8 @@ Content of the tutorial:
 
 ### Lesson 7: basic semantics
 
+![Lesson 7 - basic semantics](images/tutorial/lesson_7.gif)
+
 ### Lesson 8: semantic nearest neighborhood search
 
 ### Lesson 9: data registration Iterative Closest Point
