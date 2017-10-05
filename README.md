@@ -75,6 +75,8 @@ Content of the tutorial:
 
 ### Lesson 17: path planning (via diffusion process)
 
+![Lesson 17 - path planning (via diffusion process)](images/tutorial/lesson_17.gif)
+
 ### Lesson 18: image matching (BFROST: Binary Features from Robust Orientation Segment Tests)
 
 ### Lesson 19: laser range finder simulation
