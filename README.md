@@ -23,6 +23,8 @@ Content of the tutorial:
 
 ### Lesson 4: noise removal
 
+![Lesson 4 - noise removal](images/tutorial/lesson_4.gif)
+
 ### Lesson 5: normal vector computation
 
 ### Lesson 6: projections
