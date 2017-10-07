@@ -440,6 +440,8 @@ void singleIteration()
 {
 	if(is_iteration)
 	{
+		is_iteration=false;
+		
 		clock_t begin_time;
 		double computation_time;
 		begin_time = clock();
@@ -478,4 +480,3 @@ void singleIteration()
 		glutPostRedisplay();
 	}
 }
-
