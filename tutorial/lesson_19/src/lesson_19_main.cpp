@@ -572,4 +572,9 @@ bool pointInPolygon(simple_point3D p, simple_point3D v0, simple_point3D v1, simp
 		return false;
 }
 
-
+void reshape(int width, int height) {
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60.0, (GLfloat)width / (GLfloat) height, 0.01, 10000.0);
+}

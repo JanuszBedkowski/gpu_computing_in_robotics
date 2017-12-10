@@ -740,3 +740,10 @@ void register_obs2_to_obs1()
 	Eigen::Vector3f xyz2_res(obs.tx, obs.ty, obs.tz);
 	cudaWrapper.EulerToMatrix(omfika2_res, xyz2_res, m_pose2);
 }
+
+void reshape(int width, int height) {
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60.0, (GLfloat)width / (GLfloat) height, 0.01, 10000.0);
+}

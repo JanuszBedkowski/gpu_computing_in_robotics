@@ -162,3 +162,10 @@ void printHelp()
 	std::cout << "press 'r': show ROI on|off" << std::endl;
 	std::cout << "press 'Esc': EXIT" << std::endl;
 }
+
+void reshape(int width, int height) {
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60.0, (GLfloat)width / (GLfloat) height, 0.01, 10000.0);
+}

@@ -111,6 +111,7 @@ bool initGL(int *argc, char **argv)
 
     return true;
 }
+
 void reshape(int width, int height) {
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
