@@ -173,7 +173,10 @@
 	bool data_model::checkIfExists(std::string path)
 	{
 		boost::optional<boost::property_tree::ptree&> opt_loc_pt_  = pt_.get_child_optional(path);
-		return opt_loc_pt_;
+		if(!opt_loc_pt_){
+			return false;
+		}
+		return true;
 	}
 	
 	void data_model::setPointcloudName (std::string scanId, std::string fn)

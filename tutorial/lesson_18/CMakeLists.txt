@@ -1,22 +1,22 @@
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../../cmake")
 
-project(GPU_Computing_in_Robotics_tutorial_lesson_0)
+project(GPU_Computing_in_Robotics_tutorial_lesson_18)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(PCL 1.5 REQUIRED)
 find_package(CUDA 7.5 REQUIRED)
-find_package(CUDADevice 3.0 REQUIRED)
 find_package(OpenCV REQUIRED)
 
 set_directory_properties( PROPERTIES COMPILE_DEFINITIONS "" )
 
 include_directories(include)
-include_directories(${PCL_INCLUDE_DIRS})
-add_definitions(${PCL_DEFINITIONS})
+#include_directories(${PCL_INCLUDE_DIRS})
+#add_definitions(${PCL_DEFINITIONS})
 
-set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} ${CUDADEVICE_NVCC_FLAGS} -Xptxas -v")
+#check compute capability https://developer.nvidia.com/cuda-gpus
+set(CUDA_NVCC_FLAGS -gencode arch=compute_61,code=sm_61)
+#set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} --std c++20")
 
 cuda_add_executable(lesson_18
 	src/lesson_18_main.cpp

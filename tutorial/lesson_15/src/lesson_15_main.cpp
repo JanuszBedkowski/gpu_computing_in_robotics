@@ -123,7 +123,7 @@ main(int argc, char **argv)
 			std::cout << "index_end: " << index_end << std::endl;
 			std::cout << "index_step: " << index_step << std::endl;
 			std::cout << "exit(-1)" << std::endl;
-			exit(-1);
+			exit(1);
 		}
 	}
 
@@ -148,7 +148,7 @@ main(int argc, char **argv)
 			if(pcl::io::loadPCDFile(fn, pointcloud) == -1)
 			{
 				std::cout << "problem with pcl::io::loadPCDFile: " << fn << std::endl;
-				exit(-1);
+				exit(1);
 			}
 			vpointcloud.push_back(pointcloud);
 		}
@@ -160,14 +160,14 @@ main(int argc, char **argv)
 
 	if (false == initGL(&argc, argv))
 	{
-		return -1;
+		exit(1);
 	}
 
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
-    glutReshapeFunc(reshape);
+    	glutReshapeFunc(reshape);
 	glutMainLoop();
 }
 

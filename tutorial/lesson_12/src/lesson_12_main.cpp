@@ -116,7 +116,7 @@ main(int argc, char **argv)
 
 		if(!loadData("../../../data_sets/IMM_pointXYZIRNL/model_processed_pointXYZIRNL.xml", "scan000", "scan001", point_cloud_1, point_cloud_2))
 		{
-			exit(-1);
+			exit(1);
 		}
 
 	}else
@@ -127,12 +127,12 @@ main(int argc, char **argv)
 		if(xml_indices.size()!=1)
 		{
 			std::cout << "inputXML wrong extension, check if it is xxx.xml!" << std::endl;
-			exit(-1);
+			exit(1);
 		}
 
 		if(!loadData(argv[1], argv[2], argv[3], point_cloud_1, point_cloud_2))
 		{
-			exit(-1);
+			exit(1);
 		}
 	}
 
@@ -146,14 +146,14 @@ main(int argc, char **argv)
 
 	if (false == initGL(&argc, argv))
 	{
-		return -1;
+		exit(1);
 	}
 
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
-    glutReshapeFunc(reshape);
+    	glutReshapeFunc(reshape);
 	glutMainLoop();
 
 }

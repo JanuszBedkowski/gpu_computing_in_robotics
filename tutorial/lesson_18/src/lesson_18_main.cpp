@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
-    glutReshapeFunc(reshape);
+    	glutReshapeFunc(reshape);
 	glutMainLoop();
 }
 
@@ -67,8 +67,8 @@ bool initGL(int *argc, char **argv)
     gluPerspective(60.0, (GLfloat)window_width / (GLfloat) window_height, 0.01, 10000.0);
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
-	glDisable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_2D);
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
 
     return true;
 }

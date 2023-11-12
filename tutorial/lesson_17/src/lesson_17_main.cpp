@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 {
 	if (false == initGL(&argc, argv))
 	{
-		return -1;
+		return 1;
 	}
 
 	map = new unsigned char [sizePathMap*sizePathMap*3];
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
-    glutReshapeFunc(reshape);
+    	glutReshapeFunc(reshape);
 	glutMainLoop();
 }
 

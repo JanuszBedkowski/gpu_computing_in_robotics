@@ -121,12 +121,12 @@ int main(int argc, char **argv)
 
 		if(pcl::io::loadPCDFile("../../data/scan_Velodyne_VLP16.pcd", first_point_cloud) == -1)
 		{
-			return -1;
+			return 1;
 		}
 
 		if(pcl::io::loadPCDFile("../../data/scan_Velodyne_VLP16_2.pcd", second_point_cloud) == -1)
 		{
-			return -1;
+			return 1;
 		}
 
 	}else
@@ -137,17 +137,17 @@ int main(int argc, char **argv)
 		if(ind_pcd.size() != 2)
 		{
 			std::cout << "did you forget pcd files location? return" << std::endl;
-			return -1;
+			return 1;
 		}
 
 		if(pcl::io::loadPCDFile(argv[1], first_point_cloud) == -1)
 		{
-			return -1;
+			return 1;
 		}
 
 		if(pcl::io::loadPCDFile(argv[2], second_point_cloud) == -1)
 		{
-			return -1;
+			return 1;
 		}
 	}
 
@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 
 	if (false == initGL(&argc, argv))
 	{
-		return -1;
+		return 1;
 	}
 
 	nearest_neighbour_indexes.resize(second_point_cloud.size());
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
-    glutReshapeFunc(reshape);
+    	glutReshapeFunc(reshape);
 	glutMainLoop();
 }
 

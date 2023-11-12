@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
 		if(pcl::io::loadPCDFile("../../data/scan_Velodyne_VLP16.pcd", point_cloud) == -1)
 		{
-			return -1;
+			return 1;
 		}
 	}else
 	{
@@ -62,19 +62,19 @@ int main(int argc, char **argv)
 		if(ind_pcd.size()!=1)
 		{
 			std::cout << "did you forget pcd file location? return" << std::endl;
-			return -1;
+			return 1;
 		}
 
 		if(pcl::io::loadPCDFile(argv[1], point_cloud) == -1)
 		{
-			return -1;
+			return 1;
 		}
 	}
 
 
 	if (false == initGL(&argc, argv))
 	{
-		return -1;
+		return 1;
 	}
 
 	printHelp();

@@ -3,19 +3,8 @@
 //PCL
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
-//#include <pcl/point_representation.h>
 #include <pcl/io/pcd_io.h>
-//#include <pcl/filters/voxel_grid.h>
-//#include <pcl/filters/filter.h>
-//#include <pcl/features/normal_3d.h>
-//#include <pcl/registration/transforms.h>
-//#include <pcl/registration/ndt.h>
 #include <pcl/console/parse.h>
-//#include <pcl/registration/icp.h>
-//#include <pcl/common/time.h>
-//#include <pcl/filters/voxel_grid.h>
-//#include <pcl/filters/statistical_outlier_removal.h>
-//#include <pcl/PCLPointCloud2.h>
 
 #include "cudaWrapper.h"
 
@@ -58,7 +47,7 @@ int main(int argc, char **argv)
 
 			if(pcl::io::loadPCDFile("../../data/scan_Velodyne_VLP16.pcd", point_cloud) == -1)
 			{
-				return -1;
+				return 1;
 			}
 		}else
 		{
@@ -68,12 +57,12 @@ int main(int argc, char **argv)
 			if(ind_pcd.size()!=1)
 			{
 				std::cout << "did you forget pcd file location? return" << std::endl;
-				return -1;
+				return 1;
 			}
 
 			if(pcl::io::loadPCDFile(argv[1], point_cloud) == -1)
 			{
-				return -1;
+				return 1;
 			}
 
 			pcl::console::parse_argument (argc, argv, "-sr", search_radius);
@@ -86,7 +75,7 @@ int main(int argc, char **argv)
 
 	if (false == initGL(&argc, argv))
 	{
-		return -1;
+		return 1;
 	}
 
 	printHelp();
@@ -105,7 +94,7 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);
-    glutReshapeFunc(reshape);
+    	glutReshapeFunc(reshape);
 	glutMainLoop();
 }
 

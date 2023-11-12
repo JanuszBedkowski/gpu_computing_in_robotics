@@ -11,6 +11,9 @@
 texture<unsigned char, 1, cudaReadModeElementType> texInImage;
 texture<unsigned int, 1, cudaReadModeElementType> texIntegralImage;
 
+//cudaTextureObject_t texInImage;
+//cudaTextureObject_t texIntegralImage;
+
 __device__ unsigned int keypointsCount = 0;
 
 __global__ void

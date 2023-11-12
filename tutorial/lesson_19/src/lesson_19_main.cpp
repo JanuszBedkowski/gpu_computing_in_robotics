@@ -59,14 +59,14 @@ int main(int argc, char **argv)
 		if(!loadTrianglesFromHeightmap(std::string("../heightmaps/heightmap.png"), vTriangles, vNormals))
 		{
 			std::cout << "Problem with loadTrianglesFromHeightmap for filename: " << argv[1] << std::endl;
-			return -1;
+			return 1;
 		}
 	}else
 	{
 		if(!loadTrianglesFromHeightmap(std::string(argv[1]), vTriangles, vNormals))
 		{
 			std::cout << "Problem with loadTrianglesFromHeightmap for filename: " << argv[1] << std::endl;
-			return -1;
+			return 1;
 		}
 	}
 
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
 	if(!cudaWrapper.copyPlaneDataToGPU(vPlanes))
 	{
 		std::cout << "problem with cudaWrapper.copyPlaneDataToGPU(vPlanes)" << std::endl;
-		return -1;
+		return 1;
 	}
 
 	single_laser_beam_CPU.distance = 100.0f;
