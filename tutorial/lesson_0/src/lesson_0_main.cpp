@@ -3,19 +3,8 @@
 //PCL
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
-//#include <pcl/point_representation.h>
 #include <pcl/io/pcd_io.h>
-//#include <pcl/filters/voxel_grid.h>
-//#include <pcl/filters/filter.h>
-//#include <pcl/features/normal_3d.h>
-//#include <pcl/registration/transforms.h>
-//#include <pcl/registration/ndt.h>
 #include <pcl/console/parse.h>
-//#include <pcl/registration/icp.h>
-//#include <pcl/common/time.h>
-//#include <pcl/filters/voxel_grid.h>
-//#include <pcl/filters/statistical_outlier_removal.h>
-//#include <pcl/PCLPointCloud2.h>
 
 #include "cudaWrapper.h"
 
